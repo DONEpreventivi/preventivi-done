@@ -13,6 +13,7 @@
 
 <style>
 :root{
+  --header-h:104px;
   --cream:#F3E7D3;
   --paper:#FFF9F0;
   --ink:#222222;
@@ -35,14 +36,17 @@ body{
   padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
 }
 button,input,textarea,select{font:inherit}
+button{border:0}
 .app{max-width:920px;margin:auto;min-height:100vh}
 header{
-  position:sticky;top:0;z-index:40;
+  position:sticky;top:0;z-index:40;min-height:var(--header-h);
   background:var(--ink);color:#fff;
   padding:14px 14px 11px;
   border-bottom:4px solid var(--mustard);
 }
 .brand{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.brand-left{display:flex;align-items:center;gap:10px;min-width:0}
+.done-logo{width:42px;height:auto;display:block;object-fit:contain;flex:0 0 auto;filter:invert(1)}
 h1{margin:0;font-size:24px;line-height:1;font-weight:900;letter-spacing:-.4px}
 .sub{font-size:12px;color:#d8d8d8;margin-top:5px}
 #saveState{font-size:12px;color:#d8d8d8;padding-top:3px}
@@ -50,10 +54,10 @@ h1{margin:0;font-size:24px;line-height:1;font-weight:900;letter-spacing:-.4px}
 .tab{border:0;border-radius:8px;padding:10px 8px;font-weight:900;background:#3a3a3a;color:#aaa}
 .tab.active{background:var(--yellow);color:var(--ink)}
 .budget-dock{
-  position:sticky;top:103px;z-index:35;
+  position:sticky;top:calc(var(--header-h) + env(safe-area-inset-top));z-index:35;
   display:grid;grid-template-columns:repeat(5,1fr);gap:6px;
-  padding:8px 8px 10px;background:var(--cream);
-  border-bottom:2px solid var(--line);
+  padding:10px 8px 12px;background:var(--cream);
+  border-bottom:2px solid var(--line);overflow:visible;
 }
 .dock-card{padding:10px 7px;border-radius:8px;color:var(--ink);min-width:0}
 .dock-card:nth-child(1){background:var(--mustard)}
@@ -91,7 +95,8 @@ main{padding:10px 10px 120px}
 .product-meta{font-size:12px;color:var(--muted);margin-top:4px}
 .quantity{
   display:grid;grid-template-columns:40px 58px 40px;
-  border:3px solid var(--ink);border-radius:8px;overflow:hidden;flex:0 0 auto
+  border:0;border-radius:8px;overflow:hidden;flex:0 0 auto;
+  box-shadow:0 0 0 1px rgba(34,34,34,.08)
 }
 .quantity button{height:44px;border:0;background:var(--ink);color:#fff;font-size:23px;font-weight:950}
 .quantity input{
@@ -132,7 +137,7 @@ main{padding:10px 10px 120px}
   background:var(--cream);border-top:2px solid var(--ink)
 }
 .actions{max-width:900px;margin:auto;display:grid;grid-template-columns:1fr 1.35fr;gap:8px}
-.action{border:2px solid var(--ink);border-radius:8px;padding:14px 10px;font-weight:950}
+.action{border:0;border-radius:8px;padding:14px 10px;font-weight:950;box-shadow:none}
 .secondary{background:var(--paper);color:var(--ink)}
 .primary{background:var(--orange);color:#fff}
 details{padding:11px;background:var(--paper)}
@@ -184,7 +189,10 @@ summary{font-weight:950;cursor:pointer}
 <div class="app">
 <header>
   <div class="brand">
-    <div><h1>Preventivi D.ONE</h1><div class="sub">Food + beverage</div></div>
+    <div class="brand-left">
+      <img class="done-logo" src="./images/logo-done.png" alt="D.ONE Torino">
+      <div><h1>Preventivi D.ONE</h1><div class="sub">Food + beverage</div></div>
+    </div>
     <div id="saveState">Salvato</div>
   </div>
   <div class="tabs">
@@ -438,13 +446,13 @@ function save(){
     const el=document.getElementById(id);
     data[id]=el.type==="checkbox"?el.checked:el.value;
   });
-  try{localStorage.setItem("done-preventivi-flat-v3",JSON.stringify(data))}catch(e){}
+  try{localStorage.setItem("done-preventivi-flat-v3-1",JSON.stringify(data))}catch(e){}
   setTimeout(()=>document.getElementById("saveState").textContent="Salvato",150);
 }
 
 function load(){
   try{
-    const d=JSON.parse(localStorage.getItem("done-preventivi-flat-v3"));
+    const d=JSON.parse(localStorage.getItem("done-preventivi-flat-v3-1"));
     if(!d)return;
     ids.forEach(id=>{
       const el=document.getElementById(id);
