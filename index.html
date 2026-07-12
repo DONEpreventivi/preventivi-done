@@ -46,7 +46,7 @@ header{
 }
 .brand{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
 .brand-left{display:flex;align-items:center;gap:10px;min-width:0}
-.done-logo{width:42px;height:auto;display:block;object-fit:contain;flex:0 0 auto;filter:invert(1)}
+.done-logo{width:46px;height:auto;display:block;object-fit:contain;flex:0 0 auto}
 h1{margin:0;font-size:24px;line-height:1;font-weight:900;letter-spacing:-.4px}
 .sub{font-size:12px;color:#d8d8d8;margin-top:5px}
 #saveState{font-size:12px;color:#d8d8d8;padding-top:3px}
@@ -56,17 +56,18 @@ h1{margin:0;font-size:24px;line-height:1;font-weight:900;letter-spacing:-.4px}
 .budget-dock{
   position:sticky;top:calc(var(--header-h) + env(safe-area-inset-top));z-index:35;
   display:grid;grid-template-columns:repeat(5,1fr);gap:6px;
-  padding:10px 8px 12px;background:var(--cream);
+  min-height:88px;
+  padding:14px 8px 16px;background:var(--cream);
   border-bottom:2px solid var(--line);overflow:visible;
 }
-.dock-card{padding:10px 7px;border-radius:8px;color:var(--ink);min-width:0}
+.dock-card{padding:14px 8px;border-radius:8px;color:var(--ink);min-width:0;display:flex;flex-direction:column;justify-content:center}
 .dock-card:nth-child(1){background:var(--mustard)}
 .dock-card:nth-child(2){background:var(--teal)}
 .dock-card:nth-child(3){background:var(--orange)}
 .dock-card:nth-child(4){background:var(--green)}
 .dock-card:nth-child(5){background:var(--blue);color:#fff}
-.dock-label{font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:.35px;white-space:nowrap}
-.dock-value{font-size:16px;font-weight:950;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dock-label{font-size:9px;line-height:1.15;font-weight:900;text-transform:uppercase;letter-spacing:.35px;white-space:nowrap}
+.dock-value{font-size:17px;line-height:1.2;font-weight:950;margin-top:5px;white-space:nowrap;overflow:visible;text-overflow:clip}
 .dock-card.negative{background:var(--danger)!important;color:#fff}
 main{padding:10px 10px 120px}
 .panel{display:none}.panel.active{display:block}
@@ -76,9 +77,9 @@ main{padding:10px 10px 120px}
 }
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .field,.metric,.product,.summary-card,.cost-row,details,.beverage-card,.notes-card{
-  border:2px solid var(--ink);border-radius:10px;background:var(--paper)
+  border:0;border-radius:10px;background:var(--paper)
 }
-.field{padding:10px 11px}
+.field{padding:10px 11px;box-shadow:0 1px 0 rgba(34,34,34,.05)}
 .field label,.metric-label{
   display:block;font-size:9px;font-weight:950;text-transform:uppercase;letter-spacing:.45px;margin-bottom:5px
 }
@@ -89,7 +90,7 @@ main{padding:10px 10px 120px}
 .field.pp{background:var(--orange)}
 .field.place{background:var(--pink)}
 .product-list{display:grid;gap:8px}
-.product{padding:12px;background:var(--paper)}
+.product{padding:12px;background:var(--paper);box-shadow:0 1px 0 rgba(34,34,34,.06)}
 .product-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
 .product-name{font-size:16px;font-weight:950;line-height:1.15}
 .product-meta{font-size:12px;color:var(--muted);margin-top:4px}
@@ -126,7 +127,7 @@ main{padding:10px 10px 120px}
 .summary-value{font-size:22px;font-weight:950;margin-top:4px}
 .notes-card{padding:11px;background:var(--paper)}
 .notes-card textarea{
-  width:100%;min-height:110px;resize:vertical;border:2px solid var(--ink);
+  width:100%;min-height:110px;resize:vertical;border:0;
   border-radius:8px;padding:10px;background:#fff;font-size:15px;outline:0
 }
 .note-toggle{display:flex;align-items:center;gap:9px;margin-top:10px;font-weight:900}
@@ -137,6 +138,7 @@ main{padding:10px 10px 120px}
   background:var(--cream);border-top:2px solid var(--ink)
 }
 .actions{max-width:900px;margin:auto;display:grid;grid-template-columns:1fr 1.35fr;gap:8px}
+.new-quote{grid-column:1/-1;background:var(--blue);color:#fff}
 .action{border:0;border-radius:8px;padding:14px 10px;font-weight:950;box-shadow:none}
 .secondary{background:var(--paper);color:var(--ink)}
 .primary{background:var(--orange);color:#fff}
@@ -162,9 +164,9 @@ summary{font-weight:950;cursor:pointer}
 }
 @media(max-width:470px){
   .budget-dock{grid-template-columns:repeat(5,1fr);gap:4px;padding-left:4px;padding-right:4px}
-  .dock-card{padding:8px 4px}
-  .dock-label{font-size:7px}
-  .dock-value{font-size:13px}
+  .dock-card{padding:11px 5px}
+  .dock-label{font-size:7.5px;line-height:1.1}
+  .dock-value{font-size:14px;line-height:1.2}
   .quantity{grid-template-columns:36px 52px 36px}
   .quantity input{width:52px}
 }
@@ -176,7 +178,7 @@ summary{font-weight:950;cursor:pointer}
   .budget-dock{position:static!important;padding:0 0 10px!important;background:#fff!important;border:0!important}
   .product.zero-qty,.beverage-card.not-selected{display:none!important}
   .quantity button{display:none!important}
-  .quantity{grid-template-columns:58px!important;border:2px solid #222!important}
+  .quantity{grid-template-columns:58px!important;border:0!important}
   .quantity input{border:0!important}
   .product,.field,.summary-card,.beverage-card,.notes-card{break-inside:avoid}
   .pdf-only{display:block!important}
@@ -286,7 +288,8 @@ summary{font-weight:950;cursor:pointer}
 <div class="actionbar">
   <div class="actions">
     <button class="action secondary" id="resetBtn">Azzera quantità</button>
-    <button class="action primary" onclick="window.print()">Crea PDF</button>
+    <button class="action primary" id="pdfBtn">Crea PDF</button>
+    <button class="action new-quote" id="newQuoteBtn">Nuovo preventivo</button>
   </div>
 </div>
 </div>
@@ -446,13 +449,13 @@ function save(){
     const el=document.getElementById(id);
     data[id]=el.type==="checkbox"?el.checked:el.value;
   });
-  try{localStorage.setItem("done-preventivi-flat-v3-1",JSON.stringify(data))}catch(e){}
+  try{localStorage.setItem("done-preventivi-v1-0",JSON.stringify(data))}catch(e){}
   setTimeout(()=>document.getElementById("saveState").textContent="Salvato",150);
 }
 
 function load(){
   try{
-    const d=JSON.parse(localStorage.getItem("done-preventivi-flat-v3-1"));
+    const d=JSON.parse(localStorage.getItem("done-preventivi-v1-0"));
     if(!d)return;
     ids.forEach(id=>{
       const el=document.getElementById(id);
@@ -471,6 +474,60 @@ document.getElementById("resetBtn").addEventListener("click",()=>{
     renderProducts();renderBeverages();calculate();
   }
 });
+
+function cleanFilePart(value){
+  return String(value || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g,"")
+    .replace(/[^a-zA-Z0-9_-]+/g,"")
+    .trim();
+}
+
+function formatPdfDate(value){
+  if(!value) return "";
+  const parts=value.split("-");
+  if(parts.length!==3) return cleanFilePart(value);
+  return `${parts[2]}-${parts[1]}-${parts[0].slice(-2)}`;
+}
+
+function createPdf(){
+  const datePart=formatPdfDate(document.getElementById("date").value) || "senza-data";
+  const clientPart=cleanFilePart(document.getElementById("client").value) || "cliente";
+  const rawProposal=(document.getElementById("proposal").value || "PROPOSTA A").trim();
+  const match=rawProposal.match(/proposta\s*([a-z0-9]+)/i);
+  const proposalPart=match
+    ? `proposta${match[1].charAt(0).toUpperCase()}${match[1].slice(1).toLowerCase()}`
+    : cleanFilePart(rawProposal) || "propostaA";
+
+  const oldTitle=document.title;
+  document.title=`${datePart}_${clientPart}_${proposalPart}`;
+  window.print();
+  setTimeout(()=>{document.title=oldTitle},1200);
+}
+
+function newQuote(){
+  if(!confirm("Creare un nuovo preventivo e cancellare i dati attuali?")) return;
+
+  products.forEach(p=>p.qty=0);
+  beverages.forEach(b=>b.selected=false);
+
+  document.getElementById("proposal").value="PROPOSTA A";
+  document.getElementById("client").value="";
+  document.getElementById("phone").value="";
+  document.getElementById("date").value="";
+  document.getElementById("time").value="";
+  document.getElementById("notes").value="";
+  document.getElementById("placePreference").value="Indifferente";
+
+  renderProducts();
+  renderBeverages();
+  calculate();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+document.getElementById("pdfBtn").addEventListener("click",createPdf);
+document.getElementById("newQuoteBtn").addEventListener("click",newQuote);
+
 
 ids.forEach(id=>{
   const el=document.getElementById(id);
