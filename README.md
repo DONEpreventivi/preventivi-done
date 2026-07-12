@@ -1,27 +1,10 @@
-# Preventivi D.ONE v2.0.1
+# Preventivi D.ONE v2.0.2 DEBUG
 
-Versione corretta con grafica, CSS, JavaScript e logo incorporati direttamente dentro `index.html`.
-
-Questo evita problemi dovuti a:
-- cartelle `assets` non caricate;
-- percorsi errati;
-- cache incompleta di GitHub Pages;
-- caricamento parziale dei file su iPhone.
-
-## Aggiornamento GitHub
-
-Sostituisci nella root del repository:
-
-- `index.html`
-- `manifest.webmanifest`
-- `sw.js`
-- cartella `icons`
-
-La cartella `assets` non serve più.
-
-Dopo il commit:
-1. attendi 1-2 minuti;
-2. apri il link GitHub Pages in Safari;
-3. ricarica;
-4. chiudi completamente la web app;
-5. riaprila dall'icona Home.
+Correzioni:
+- maggiore spazio di scroll sotto le note;
+- “Azzera quantità” azzera anche persone e budget;
+- nel PDF compare il testo delle note senza la dicitura “Note”;
+- PDF compatto A4, con quantità, pezzi e importi parziali;
+- aggiunte bottiglie di vino da €23 e €26 con controlli +/−;
+- le bottiglie concorrono al totale beverage;
+- dati delle bottiglie inclusi nel salvataggio, archivio e duplicazione.
