@@ -1,17 +1,27 @@
-# Preventivi D.ONE v2.1
+# Preventivi D.ONE v2.0.1
 
-Pacchetto pronto per GitHub Pages.
+Versione corretta con grafica, CSS, JavaScript e logo incorporati direttamente dentro `index.html`.
 
-## Aggiornamento
-1. Estrai lo ZIP.
-2. Carica nella root del repository `index.html`, `manifest.webmanifest`, `sw.js`, `README.md` e la cartella `icons`.
-3. Attendi 1-2 minuti.
-4. Apri il link GitHub Pages in Safari e ricarica la pagina.
-5. Chiudi e riapri la web app dall'icona Home.
+Questo evita problemi dovuti a:
+- cartelle `assets` non caricate;
+- percorsi errati;
+- cache incompleta di GitHub Pages;
+- caricamento parziale dei file su iPhone.
 
-## Novità
-- PDF compatto pensato per una pagina A4.
-- Quantità e prezzi nel PDF.
-- Descrizione automatica basata sulle quantità.
-- Descrizione modificabile e opzionale nel PDF.
-- Condivisione iOS e messaggio WhatsApp precompilato.
+## Aggiornamento GitHub
+
+Sostituisci nella root del repository:
+
+- `index.html`
+- `manifest.webmanifest`
+- `sw.js`
+- cartella `icons`
+
+La cartella `assets` non serve più.
+
+Dopo il commit:
+1. attendi 1-2 minuti;
+2. apri il link GitHub Pages in Safari;
+3. ricarica;
+4. chiudi completamente la web app;
+5. riaprila dall'icona Home.
