@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#111111">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Preventivi D.ONE">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" href="./icons/icon-180.png">
+  <title>Preventivi D.ONE</title>
+  <style>
+    :root{
+      --bg:#f2f1ed; --card:#fff; --ink:#111; --muted:#6f6f6f;
+      --line:#deddd8; --teal:#77a9ab; --orange:#ef6a4e;
+      --sand:#f3c77e; --green:#79b39d; --red:#e35b64; --yellow:#ffe100;
+      --shadow:0 8px 24px rgba(0,0,0,.08);
+    }
+    *{box-sizing:border-box}
+    html{background:var(--bg)}
+    body{
+      margin:0;background:var(--bg);color:var(--ink);
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+    }
+    button,input{font:inherit}
+    .app{max-width:860px;margin:auto;min-height:100vh}
+    header{
+      position:sticky;top:0;z-index:20;background:rgba(17,17,17,.97);color:#fff;
+      padding:14px 16px 12px;backdrop-filter:blur(12px)
+    }
+    .brand{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    h1{font-size:20px;line-height:1;margin:0;letter-spacing:.2px}
+    .small{font-size:12px;color:#bdbdbd;margin-top:5px}
+    .tabs{display:flex;gap:7px;margin-top:12px}
+    .tab{
+      flex:1;border:1px solid #444;background:#222;color:#aaa;padding:10px 8px;
+      border-radius:11px;font-weight:850
+    }
+    .tab.active{background:#fff;color:#111;border-color:#fff}
+    main{padding:12px 12px 110px}
+    .panel{display:none}.panel.active{display:block}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .field,.metric,.card{border-radius:15px;background:var(--card);box-shadow:var(--shadow)}
+    .field{padding:11px 12px}
+    .field label,.metric .label{
+      display:block;font-size:10px;font-weight:900;letter-spacing:.55px;text-transform:uppercase;
+      margin-bottom:5px
+    }
+    .field input{
+      width:100%;min-width:0;border:0;background:transparent;outline:none;
+      font-size:18px;font-weight:850;color:#111
+    }
+    .teal{background:var(--teal)} .orange{background:var(--orange)}
+    .sand{background:var(--sand)} .green{background:var(--green)}
+    .metric{padding:13px;text-align:center}
+    .metric .value{font-size:25px;font-weight:950;white-space:nowrap}
+    .metric.negative{background:#f2a6ad}
+    .section-title{
+      margin:15px 2px 8px;font-size:12px;font-weight:950;letter-spacing:.65px;
+      text-transform:uppercase
+    }
+    .product-list{display:grid;gap:8px}
+    .product{
+      background:#fff;border-radius:15px;padding:12px;box-shadow:var(--shadow)
+    }
+    .product-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .product-name{font-size:16px;font-weight:900;line-height:1.15}
+    .product-meta{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.35}
+    .quantity{
+      flex:0 0 auto;display:grid;grid-template-columns:42px 54px 42px;
+      border:3px solid var(--yellow);border-radius:12px;overflow:hidden;background:#fff
+    }
+    .quantity button{border:0;background:#111;color:#fff;font-size:23px;font-weight:900;height:42px}
+    .quantity input{
+      width:54px;border:0;text-align:center;font-size:19px;font-weight:950;color:#d62929;outline:none
+    }
+    .product-result{
+      display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px
+    }
+    .chip{background:#f1f1ef;border-radius:10px;padding:8px 9px;font-size:12px}
+    .chip strong{display:block;font-size:15px;margin-top:1px}
+    .summary{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+    .summary .card{padding:12px}
+    .summary-label{font-size:11px;color:var(--muted);font-weight:800}
+    .summary-value{font-size:22px;font-weight:950;margin-top:3px}
+    .actionbar{
+      position:fixed;left:0;right:0;bottom:0;z-index:30;
+      padding:10px max(12px,env(safe-area-inset-left)) calc(10px + env(safe-area-inset-bottom));
+      background:rgba(255,255,255,.96);border-top:1px solid var(--line);backdrop-filter:blur(12px)
+    }
+    .actions{max-width:836px;margin:auto;display:grid;grid-template-columns:1fr 1.3fr;gap:9px}
+    .action{border:0;border-radius:13px;padding:14px 10px;font-weight:950}
+    .secondary{background:#ecebe7}.primary{background:#111;color:#fff}
+    .cost-table{display:grid;gap:8px}
+    .cost-row{background:#fff;border-radius:14px;padding:11px;box-shadow:var(--shadow)}
+    .cost-head{font-weight:900;margin-bottom:8px}
+    .cost-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+    .mini-field{background:#f1f1ef;border-radius:9px;padding:7px}
+    .mini-field label{display:block;font-size:9px;text-transform:uppercase;font-weight:900;color:#777}
+    .mini-field input{width:100%;border:0;background:transparent;font-weight:850;outline:none;margin-top:3px}
+    .readonly{font-size:15px;font-weight:900;margin-top:3px}
+    details{background:#fff;border-radius:14px;padding:10px 12px;box-shadow:var(--shadow)}
+    summary{font-weight:900;cursor:pointer}
+    .settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+    .notice{font-size:12px;color:#666;line-height:1.4;margin:10px 2px}
+    @media(min-width:680px){
+      .grid{grid-template-columns:repeat(4,1fr)}
+      .product-list{grid-template-columns:1fr 1fr}
+      .summary{grid-template-columns:repeat(4,1fr)}
+    }
+    @media print{
+      header,.actionbar,.tabs,.admin-only,details{display:none!important}
+      body,html,.app{background:#fff}
+      main{padding:0}
+      .panel{display:block!important}
+      #costPanel{display:none!important}
+      .field,.metric,.product,.card{box-shadow:none;border:1px solid #ccc}
+      .quantity button{display:none}.quantity{grid-template-columns:54px;border:1px solid #999}
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="brand">
+      <div><h1>Preventivi D.ONE</h1><div class="small">Web app mobile · dati salvati sul dispositivo</div></div>
+      <div id="saveState" class="small">Salvato</div>
+    </div>
+    <div class="tabs">
+      <button class="tab active" data-panel="quotePanel">Preventivo</button>
+      <button class="tab" data-panel="costPanel">Food cost</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="quotePanel" class="panel active">
+      <div class="grid">
+        <div class="field teal"><label>Numero persone</label><input id="people" type="number" min="1" value="1"></div>
+        <div class="field orange"><label>Spesa per persona</label><input id="perPerson" type="number" min="0" step="0.50" value="17"></div>
+        <div class="metric sand"><div class="label">Budget totale</div><div class="value" id="budgetTotal">€ 17</div></div>
+        <div class="metric green" id="residualCard"><div class="label">Budget residuo</div><div class="value" id="budgetResidual">€ 17</div></div>
+      </div>
+
+      <div class="section-title">Dati proposta</div>
+      <div class="grid">
+        <div class="field"><label>Nome proposta</label><input id="proposal" value="PROPOSTA B"></div>
+        <div class="field"><label>Cliente</label><input id="client" value="Carlotta"></div>
+        <div class="field"><label>Telefono</label><input id="phone" inputmode="tel" value="3669717904"></div>
+        <div class="field"><label>Data</label><input id="date" type="date" value="2026-07-24"></div>
+        <div class="field"><label>Ora</label><input id="time" type="time" value="19:30"></div>
+      </div>
+
+      <div class="section-title">Piatti</div>
+      <div id="productList" class="product-list"></div>
+
+      <div class="summary">
+        <div class="card"><div class="summary-label">Spesa totale</div><div class="summary-value" id="salesTotal">€ 0</div></div>
+        <div class="card"><div class="summary-label">Pezzi totali</div><div class="summary-value" id="piecesTotal">0</div></div>
+        <div class="card"><div class="summary-label">Costo totale</div><div class="summary-value" id="costTotal">€ 0</div></div>
+        <div class="card"><div class="summary-label">Utile stimato</div><div class="summary-value" id="profitTotal">€ 0</div></div>
+      </div>
+
+      <div class="section-title">Impostazioni</div>
+      <details>
+        <summary>Modifica prezzi, resa e costi</summary>
+        <div class="notice">Le modifiche vengono salvate solo su questo dispositivo.</div>
+        <div id="settingsList"></div>
+      </details>
+    </section>
+
+    <section id="costPanel" class="panel">
+      <div class="grid">
+        <div class="metric sand"><div class="label">Budget totale</div><div class="value" id="fcBudget">€ 0</div></div>
+        <div class="metric"><div class="label">Costo</div><div class="value" id="fcCost">€ 0</div></div>
+        <div class="metric green"><div class="label">Differenza utile</div><div class="value" id="fcProfit">€ 0</div></div>
+        <div class="metric"><div class="label">Margine medio</div><div class="value" id="fcMargin">0%</div></div>
+      </div>
+      <div class="section-title">Dettaglio food cost</div>
+      <div id="costTable" class="cost-table"></div>
+      <div class="notice">Il foglio Excel originale non attribuiva un costo all'Hummus: nella web app è impostato a €0 e può essere modificato nelle impostazioni.</div>
+    </section>
+  </main>
+
+  <div class="actionbar">
+    <div class="actions">
+      <button class="action secondary" id="resetBtn">Azzera quantità</button>
+      <button class="action primary" onclick="window.print()">Stampa / salva PDF</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const DEFAULT_PRODUCTS = [
+  {name:"Pizza padellino margherita", price:7, pieces:6, cost:1.20, qty:9},
+  {name:"Pizza padellino stagionale", price:9, pieces:6, cost:2.00, qty:9},
+  {name:"Churros salati", price:7, pieces:6, cost:1.50, qty:10},
+  {name:"Farinata", price:6, pieces:8, cost:1.00, qty:10},
+  {name:"Hummus", price:7, pieces:1, cost:0, qty:10},
+  {name:"Club Sandwich classico", price:15, pieces:4, cost:2.50, qty:9},
+  {name:"Club Sandwich vegetariano", price:13, pieces:4, cost:2.00, qty:9},
+  {name:"Tapas da 6", price:6, pieces:1, cost:0, qty:0},
+  {name:"Tapas da 8", price:8, pieces:1, cost:0, qty:0}
+];
+
+let products = structuredClone(DEFAULT_PRODUCTS);
+const ids = ["people","perPerson","proposal","client","phone","date","time"];
+
+const euro = n => new Intl.NumberFormat("it-IT",{
+  style:"currency",currency:"EUR",minimumFractionDigits:0,maximumFractionDigits:2
+}).format(Number(n)||0);
+
+function esc(s){
+  return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+}
+
+function renderProducts(){
+  const list=document.getElementById("productList");
+  list.innerHTML=products.map((p,i)=>`
+    <article class="product">
+      <div class="product-top">
+        <div>
+          <div class="product-name">${esc(p.name)}</div>
+          <div class="product-meta">${euro(p.price)} cad. · ${p.pieces} pezzi per quantità</div>
+        </div>
+        <div class="quantity">
+          <button onclick="changeQty(${i},-1)" aria-label="Diminuisci">−</button>
+          <input value="${p.qty}" min="0" type="number" inputmode="numeric" oninput="setQty(${i},this.value)">
+          <button onclick="changeQty(${i},1)" aria-label="Aumenta">+</button>
+        </div>
+      </div>
+      <div class="product-result">
+        <div class="chip">Pezzi totali<strong id="pieces-${i}">0</strong></div>
+        <div class="chip">Spesa totale<strong id="sales-${i}">€ 0</strong></div>
+      </div>
+    </article>`).join("");
+}
+
+function renderSettings(){
+  const el=document.getElementById("settingsList");
+  el.innerHTML=products.map((p,i)=>`
+    <div class="cost-row" style="margin-top:8px">
+      <div class="cost-head">${esc(p.name)}</div>
+      <div class="settings-grid">
+        <div class="mini-field"><label>Prezzo cad.</label><input type="number" step=".1" value="${p.price}" oninput="updateProduct(${i},'price',this.value)"></div>
+        <div class="mini-field"><label>Pezzi cad.</label><input type="number" step="1" value="${p.pieces}" oninput="updateProduct(${i},'pieces',this.value)"></div>
+        <div class="mini-field"><label>Costo cad.</label><input type="number" step=".1" value="${p.cost}" oninput="updateProduct(${i},'cost',this.value)"></div>
+        <div class="mini-field"><label>Nome piatto</label><input value="${esc(p.name)}" oninput="updateProduct(${i},'name',this.value)"></div>
+      </div>
+    </div>`).join("");
+}
+
+function renderCostTable(){
+  const el=document.getElementById("costTable");
+  el.innerHTML=products.map((p,i)=>{
+    const lineSales=p.price*p.qty, lineCost=p.cost*p.qty, lineProfit=lineSales-lineCost;
+    const margin=p.price ? ((p.price-p.cost)/p.price*100) : 0;
+    return `<div class="cost-row">
+      <div class="cost-head">${esc(p.name)}</div>
+      <div class="cost-grid">
+        <div class="mini-field"><label>Quantità</label><div class="readonly">${p.qty}</div></div>
+        <div class="mini-field"><label>Costo totale</label><div class="readonly">${euro(lineCost)}</div></div>
+        <div class="mini-field"><label>Utile</label><div class="readonly">${euro(lineProfit)}</div></div>
+        <div class="mini-field"><label>Prezzo cad.</label><div class="readonly">${euro(p.price)}</div></div>
+        <div class="mini-field"><label>Costo cad.</label><div class="readonly">${euro(p.cost)}</div></div>
+        <div class="mini-field"><label>Margine</label><div class="readonly">${margin.toFixed(1).replace(".",",")}%</div></div>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+function changeQty(i,d){ products[i].qty=Math.max(0,(Number(products[i].qty)||0)+d); renderProducts(); calculate(); }
+function setQty(i,v){ products[i].qty=Math.max(0,Number(v)||0); calculate(); }
+function updateProduct(i,key,v){
+  products[i][key]=key==="name"?v:Math.max(0,Number(v)||0);
+  renderProducts(); calculate();
+}
+function calculate(){
+  const people=Number(document.getElementById("people").value)||0;
+  const pp=Number(document.getElementById("perPerson").value)||0;
+  const budget=people*pp;
+  let sales=0,pieces=0,cost=0,weightedMarginSum=0,weightedSales=0;
+  products.forEach((p,i)=>{
+    const ls=p.price*p.qty, lp=p.pieces*p.qty, lc=p.cost*p.qty;
+    sales+=ls; pieces+=lp; cost+=lc;
+    weightedMarginSum += (p.price-p.cost)*p.qty;
+    weightedSales += p.price*p.qty;
+    const pe=document.getElementById(`pieces-${i}`), se=document.getElementById(`sales-${i}`);
+    if(pe) pe.textContent=lp;
+    if(se) se.textContent=euro(ls);
+  });
+  const residual=budget-sales, profit=sales-cost;
+  document.getElementById("budgetTotal").textContent=euro(budget);
+  document.getElementById("budgetResidual").textContent=euro(residual);
+  document.getElementById("residualCard").classList.toggle("negative",residual<0);
+  document.getElementById("salesTotal").textContent=euro(sales);
+  document.getElementById("piecesTotal").textContent=pieces;
+  document.getElementById("costTotal").textContent=euro(cost);
+  document.getElementById("profitTotal").textContent=euro(profit);
+  document.getElementById("fcBudget").textContent=euro(budget);
+  document.getElementById("fcCost").textContent=euro(cost);
+  document.getElementById("fcProfit").textContent=euro(budget-cost);
+  document.getElementById("fcMargin").textContent=(weightedSales?weightedMarginSum/weightedSales*100:0).toFixed(1).replace(".",",")+"%";
+  renderCostTable();
+  save();
+}
+
+function save(){
+  document.getElementById("saveState").textContent="Salvataggio…";
+  const data={products};
+  ids.forEach(id=>data[id]=document.getElementById(id).value);
+  try{localStorage.setItem("done-preventivi-v1",JSON.stringify(data));}catch(e){}
+  setTimeout(()=>document.getElementById("saveState").textContent="Salvato",180);
+}
+function load(){
+  try{
+    const data=JSON.parse(localStorage.getItem("done-preventivi-v1"));
+    if(!data)return;
+    ids.forEach(id=>{if(data[id]!==undefined)document.getElementById(id).value=data[id]});
+    if(Array.isArray(data.products) && data.products.length) products=data.products;
+  }catch(e){}
+}
+function resetQty(){
+  products.forEach(p=>p.qty=0);
+  renderProducts();calculate();
+}
+document.getElementById("resetBtn").addEventListener("click",()=>{
+  if(confirm("Azzerare tutte le quantità?"))resetQty();
+});
+ids.forEach(id=>document.getElementById(id).addEventListener("input",calculate));
+document.querySelectorAll(".tab").forEach(btn=>btn.addEventListener("click",()=>{
+  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+  document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));
+  btn.classList.add("active");
+  document.getElementById(btn.dataset.panel).classList.add("active");
+}));
+load();renderProducts();renderSettings();calculate();
+
+if("serviceWorker" in navigator){
+  window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+}
+</script>
+</body>
+</html>
