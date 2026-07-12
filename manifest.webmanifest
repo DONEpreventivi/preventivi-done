@@ -1,12 +1,12 @@
 {
   "name": "Preventivi D.ONE",
   "short_name": "Preventivi",
-  "description": "Calcolo rapido dei preventivi D.ONE",
+  "description": "Calcolo rapido preventivi D.ONE",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#f2f1ed",
-  "theme_color": "#111111",
+  "background_color": "#f5f5f7",
+  "theme_color": "#f5f5f7",
   "icons": [
     {
       "src": "./icons/icon-192.png",

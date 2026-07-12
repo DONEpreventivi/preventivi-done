@@ -1,22 +1,20 @@
-# Preventivi D.ONE
+# Preventivi D.ONE — versione Apple
 
-Pacchetto pronto per GitHub Pages.
+## Novità
+- Barra budget sempre visibile.
+- Grafica ridisegnata in stile iOS.
+- Nel PDF vengono escluse automaticamente tutte le voci con quantità pari a zero.
+- Migliorata la gestione della cache per gli aggiornamenti.
 
-## Caricamento
+## Aggiornamento del repository
+Sostituisci nel repository i file:
+- `index.html`
+- `manifest.webmanifest`
+- `sw.js`
+- la cartella `icons`
 
-1. Crea un repository pubblico su GitHub.
-2. Carica **tutti** i file e la cartella `icons` mantenendo la struttura.
-3. Vai in `Settings` → `Pages`.
-4. Scegli `Deploy from a branch`.
-5. Seleziona `main` e `/ (root)`, quindi salva.
-6. Dopo la pubblicazione apri il link con Safari su iPhone.
-7. Premi Condividi → Aggiungi alla schermata Home.
-
-## File inclusi
-
-- `index.html`: applicazione.
-- `manifest.webmanifest`: nome, icone e modalità app.
-- `sw.js`: funzionamento offline dopo la prima apertura.
-- `icons/`: icone per iPhone e web app.
-
-I dati inseriti sono salvati nel browser del dispositivo tramite localStorage e non vengono inviati a GitHub.
+Dopo il caricamento:
+1. attendi 1-2 minuti;
+2. chiudi completamente la web app su iPhone;
+3. riaprila;
+4. se vedi ancora la vecchia versione, apri una volta il link in Safari e aggiorna la pagina.
