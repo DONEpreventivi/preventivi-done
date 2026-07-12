@@ -1,12 +1,12 @@
 {
-  "name": "Preventivi D.ONE",
+  "name": "Preventivi D.ONE 2.0",
   "short_name": "Preventivi",
   "description": "Preventivi food e beverage D.ONE",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#F3E7D3",
-  "theme_color": "#222222",
+  "background_color": "#efe7d8",
+  "theme_color": "#efe7d8",
   "icons": [
     {
       "src": "./icons/icon-180.png",

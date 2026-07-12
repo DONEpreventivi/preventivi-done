@@ -1,555 +1,185 @@
 <!doctype html>
 <html lang="it">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#F3E7D3">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Preventivi D.ONE">
-<link rel="manifest" href="./manifest.webmanifest">
-<link rel="apple-touch-icon" href="./icons/icon-180.png">
-<title>Preventivi D.ONE</title>
-
-<style>
-:root{
-  --header-h:104px;
-  --cream:#F3E7D3;
-  --paper:#FFF9F0;
-  --ink:#222222;
-  --muted:#6F675D;
-  --teal:#74A9A6;
-  --orange:#EF6A4A;
-  --mustard:#E6B450;
-  --green:#78A97B;
-  --pink:#DFA0A7;
-  --blue:#6C8EBF;
-  --yellow:#F6D85E;
-  --line:#D8CBB9;
-  --danger:#C84E4E;
-}
-*{box-sizing:border-box}
-html{background:var(--cream)}
-body{
-  margin:0;background:var(--cream);color:var(--ink);
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
-  padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
-}
-button,input,textarea,select{font:inherit}
-button{border:0}
-.app{max-width:920px;margin:auto;min-height:100vh}
-header{
-  position:sticky;top:0;z-index:40;min-height:var(--header-h);
-  background:var(--ink);color:#fff;
-  padding:14px 14px 11px;
-  border-bottom:4px solid var(--mustard);
-}
-.brand{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
-.brand-left{display:flex;align-items:center;gap:10px;min-width:0}
-.done-logo{width:46px;height:auto;display:block;object-fit:contain;flex:0 0 auto}
-h1{margin:0;font-size:24px;line-height:1;font-weight:900;letter-spacing:-.4px}
-.sub{font-size:12px;color:#d8d8d8;margin-top:5px}
-#saveState{font-size:12px;color:#d8d8d8;padding-top:3px}
-.tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:12px}
-.tab{border:0;border-radius:8px;padding:10px 8px;font-weight:900;background:#3a3a3a;color:#aaa}
-.tab.active{background:var(--yellow);color:var(--ink)}
-.budget-dock{
-  position:sticky;top:calc(var(--header-h) + env(safe-area-inset-top));z-index:35;
-  display:grid;grid-template-columns:repeat(5,1fr);gap:6px;
-  min-height:88px;
-  padding:14px 8px 16px;background:var(--cream);
-  border-bottom:2px solid var(--line);overflow:visible;
-}
-.dock-card{padding:14px 8px;border-radius:8px;color:var(--ink);min-width:0;display:flex;flex-direction:column;justify-content:center}
-.dock-card:nth-child(1){background:var(--mustard)}
-.dock-card:nth-child(2){background:var(--teal)}
-.dock-card:nth-child(3){background:var(--orange)}
-.dock-card:nth-child(4){background:var(--green)}
-.dock-card:nth-child(5){background:var(--blue);color:#fff}
-.dock-label{font-size:9px;line-height:1.15;font-weight:900;text-transform:uppercase;letter-spacing:.35px;white-space:nowrap}
-.dock-value{font-size:17px;line-height:1.2;font-weight:950;margin-top:5px;white-space:nowrap;overflow:visible;text-overflow:clip}
-.dock-card.negative{background:var(--danger)!important;color:#fff}
-main{padding:10px 10px 120px}
-.panel{display:none}.panel.active{display:block}
-.section-title{
-  margin:20px 2px 8px;font-size:13px;font-weight:950;text-transform:uppercase;
-  letter-spacing:.65px;color:var(--ink)
-}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.field,.metric,.product,.summary-card,.cost-row,details,.beverage-card,.notes-card{
-  border:0;border-radius:10px;background:var(--paper)
-}
-.field{padding:10px 11px;box-shadow:0 1px 0 rgba(34,34,34,.05)}
-.field label,.metric-label{
-  display:block;font-size:9px;font-weight:950;text-transform:uppercase;letter-spacing:.45px;margin-bottom:5px
-}
-.field input,.field select{
-  width:100%;border:0;background:transparent;outline:0;font-size:17px;font-weight:900;color:var(--ink)
-}
-.field.people{background:var(--teal)}
-.field.pp{background:var(--orange)}
-.field.place{background:var(--pink)}
-.product-list{display:grid;gap:8px}
-.product{padding:12px;background:var(--paper);box-shadow:0 1px 0 rgba(34,34,34,.06)}
-.product-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
-.product-name{font-size:16px;font-weight:950;line-height:1.15}
-.product-meta{font-size:12px;color:var(--muted);margin-top:4px}
-.quantity{
-  display:grid;grid-template-columns:40px 58px 40px;
-  border:0;border-radius:8px;overflow:hidden;flex:0 0 auto;
-  box-shadow:0 0 0 1px rgba(34,34,34,.08)
-}
-.quantity button{height:44px;border:0;background:var(--ink);color:#fff;font-size:23px;font-weight:950}
-.quantity input{
-  width:58px;border:0;text-align:center;background:var(--yellow);color:var(--ink);
-  font-size:22px;font-weight:950;outline:0
-}
-.product-result{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}
-.chip{padding:8px 9px;border-radius:7px;background:var(--teal);font-size:11px;font-weight:800}
-.chip:nth-child(2){background:var(--mustard)}
-.chip strong{display:block;font-size:16px;margin-top:2px}
-.beverage-grid{display:grid;gap:8px}
-.beverage-card{
-  display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:center;
-  padding:11px;background:var(--paper)
-}
-.beverage-card input[type="checkbox"]{width:22px;height:22px;accent-color:var(--orange)}
-.bev-name{font-weight:950;font-size:15px}
-.bev-meta{font-size:12px;color:var(--muted);margin-top:3px}
-.bev-total{font-size:17px;font-weight:950;white-space:nowrap}
-.summary{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.summary-card{padding:11px}
-.summary-card:nth-child(1){background:var(--mustard)}
-.summary-card:nth-child(2){background:var(--teal)}
-.summary-card:nth-child(3){background:var(--orange)}
-.summary-card:nth-child(4){background:var(--green)}
-.summary-label{font-size:10px;font-weight:950;text-transform:uppercase}
-.summary-value{font-size:22px;font-weight:950;margin-top:4px}
-.notes-card{padding:11px;background:var(--paper)}
-.notes-card textarea{
-  width:100%;min-height:110px;resize:vertical;border:0;
-  border-radius:8px;padding:10px;background:#fff;font-size:15px;outline:0
-}
-.note-toggle{display:flex;align-items:center;gap:9px;margin-top:10px;font-weight:900}
-.note-toggle input{width:20px;height:20px;accent-color:var(--green)}
-.actionbar{
-  position:fixed;left:0;right:0;bottom:0;z-index:50;
-  padding:9px max(10px,env(safe-area-inset-left)) calc(9px + env(safe-area-inset-bottom));
-  background:var(--cream);border-top:2px solid var(--ink)
-}
-.actions{max-width:900px;margin:auto;display:grid;grid-template-columns:1fr 1.35fr;gap:8px}
-.new-quote{grid-column:1/-1;background:var(--blue);color:#fff}
-.action{border:0;border-radius:8px;padding:14px 10px;font-weight:950;box-shadow:none}
-.secondary{background:var(--paper);color:var(--ink)}
-.primary{background:var(--orange);color:#fff}
-details{padding:11px;background:var(--paper)}
-summary{font-weight:950;cursor:pointer}
-.notice{font-size:12px;color:var(--muted);line-height:1.45;margin:9px 2px}
-.settings-grid,.cost-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-top:8px}
-.cost-table{display:grid;gap:8px}
-.cost-row{padding:10px;background:var(--paper)}
-.cost-head{font-weight:950;margin-bottom:7px}
-.mini-field{background:#fff;border:1px solid var(--line);border-radius:7px;padding:7px}
-.mini-field label{display:block;font-size:9px;text-transform:uppercase;font-weight:950;color:var(--muted)}
-.mini-field input{width:100%;border:0;background:transparent;outline:0;font-weight:900;margin-top:3px}
-.readonly{font-size:15px;font-weight:950;margin-top:3px}
-.pdf-only{display:none}
-@media(min-width:700px){
-  .grid{grid-template-columns:repeat(4,1fr)}
-  .product-list{grid-template-columns:1fr 1fr}
-  .beverage-grid{grid-template-columns:1fr 1fr}
-  .summary{grid-template-columns:repeat(4,1fr)}
-  .settings-grid{grid-template-columns:repeat(4,1fr)}
-  .cost-grid{grid-template-columns:repeat(3,1fr)}
-}
-@media(max-width:470px){
-  .budget-dock{grid-template-columns:repeat(5,1fr);gap:4px;padding-left:4px;padding-right:4px}
-  .dock-card{padding:11px 5px}
-  .dock-label{font-size:7.5px;line-height:1.1}
-  .dock-value{font-size:14px;line-height:1.2}
-  .quantity{grid-template-columns:36px 52px 36px}
-  .quantity input{width:52px}
-}
-@media print{
-  html,body,.app{background:#fff!important}
-  header,.actionbar,.tabs,details,#costPanel,.internal-only,.no-print{display:none!important}
-  main{padding:0!important}
-  .panel{display:block!important}
-  .budget-dock{position:static!important;padding:0 0 10px!important;background:#fff!important;border:0!important}
-  .product.zero-qty,.beverage-card.not-selected{display:none!important}
-  .quantity button{display:none!important}
-  .quantity{grid-template-columns:58px!important;border:0!important}
-  .quantity input{border:0!important}
-  .product,.field,.summary-card,.beverage-card,.notes-card{break-inside:avoid}
-  .pdf-only{display:block!important}
-  .notes-card.hide-in-pdf{display:none!important}
-}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#efe7d8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Preventivi D.ONE">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" href="./icons/icon-180.png">
+  <link rel="stylesheet" href="./assets/css/app.css">
+  <title>Preventivi D.ONE</title>
 </head>
-
 <body>
-<div class="app">
-<header>
-  <div class="brand">
-    <div class="brand-left">
-      <img class="done-logo" src="./images/logo-done.png" alt="D.ONE Torino">
-      <div><h1>Preventivi D.ONE</h1><div class="sub">Food + beverage</div></div>
-    </div>
-    <div id="saveState">Salvato</div>
-  </div>
-  <div class="tabs">
-    <button class="tab active" data-panel="quotePanel">Preventivo</button>
-    <button class="tab" data-panel="costPanel">Food cost</button>
-  </div>
-</header>
-
-<div class="budget-dock">
-  <div class="dock-card"><div class="dock-label">Food budget</div><div class="dock-value" id="foodBudgetDock">€ 0</div></div>
-  <div class="dock-card"><div class="dock-label">Beverage</div><div class="dock-value" id="bevBudgetDock">€ 0</div></div>
-  <div class="dock-card"><div class="dock-label">Speso food</div><div class="dock-value" id="foodSpentDock">€ 0</div></div>
-  <div class="dock-card" id="residualDock"><div class="dock-label">Residuo food</div><div class="dock-value" id="foodResidualDock">€ 0</div></div>
-  <div class="dock-card"><div class="dock-label">Totale</div><div class="dock-value" id="grandBudgetDock">€ 0</div></div>
-</div>
-
-<main>
-<section id="quotePanel" class="panel active">
-
-  <div class="section-title">Dati evento</div>
-  <div class="grid">
-    <div class="field people"><label>Numero persone</label><input id="people" type="number" min="1" value="1"></div>
-    <div class="field pp"><label>Budget food per persona</label><input id="perPerson" type="number" min="0" step=".5" value="17"></div>
-    <div class="field"><label>Nome proposta</label><input id="proposal" value="PROPOSTA B"></div>
-    <div class="field"><label>Cliente</label><input id="client" value="Carlotta"></div>
-    <div class="field"><label>Telefono</label><input id="phone" inputmode="tel" value="3669717904"></div>
-    <div class="field"><label>Data</label><input id="date" type="date" value="2026-07-24"></div>
-    <div class="field"><label>Ora</label><input id="time" type="time" value="19:30"></div>
-    <div class="field place">
-      <label>Preferenza posto</label>
-      <select id="placePreference">
-        <option value="Dentro">Dentro</option>
-        <option value="Fuori">Fuori</option>
-        <option value="Indifferente" selected>Indifferente</option>
-      </select>
-    </div>
-  </div>
-
-  <div class="section-title">Piatti</div>
-  <div id="productList" class="product-list"></div>
-
-  <div class="section-title">Beverage</div>
-  <div class="notice">Ogni opzione selezionata viene calcolata per il numero totale di persone.</div>
-  <div id="beverageList" class="beverage-grid"></div>
-
-  <div class="section-title">Recap preventivo</div>
-  <div class="summary">
-    <div class="summary-card"><div class="summary-label">Budget food</div><div class="summary-value" id="foodBudget">€ 0</div></div>
-    <div class="summary-card"><div class="summary-label">Budget beverage</div><div class="summary-value" id="beverageBudget">€ 0</div></div>
-    <div class="summary-card"><div class="summary-label">Totale preventivo</div><div class="summary-value" id="grandBudget">€ 0</div></div>
-    <div class="summary-card"><div class="summary-label">Pezzi food</div><div class="summary-value" id="piecesTotal">0</div></div>
-  </div>
-
-  <div class="summary internal-only" style="margin-top:8px">
-    <div class="summary-card"><div class="summary-label">Spesa food selezionata</div><div class="summary-value" id="foodSpent">€ 0</div></div>
-    <div class="summary-card"><div class="summary-label">Costo totale interno</div><div class="summary-value" id="costTotal">€ 0</div></div>
-    <div class="summary-card"><div class="summary-label">Utile stimato interno</div><div class="summary-value" id="profitTotal">€ 0</div></div>
-    <div class="summary-card"><div class="summary-label">Residuo food</div><div class="summary-value" id="foodResidual">€ 0</div></div>
-  </div>
-
-  <div class="section-title">Note</div>
-  <div class="notes-card" id="notesCard">
-    <textarea id="notes" placeholder="Scrivi qui note, richieste particolari, allergie, dettagli organizzativi..."></textarea>
-    <label class="note-toggle">
-      <input id="publishNotes" type="checkbox" checked>
-      Includi le note nel PDF esportato
-    </label>
-  </div>
-
-  <div class="section-title no-print">Impostazioni avanzate</div>
-  <details>
-    <summary>Modifica piatti, prezzi, resa e costi</summary>
-    <div class="notice">Le modifiche vengono salvate solo su questo dispositivo.</div>
-    <div id="settingsList"></div>
-  </details>
-</section>
-
-<section id="costPanel" class="panel">
-  <div class="section-title">Riepilogo food cost</div>
-  <div class="summary">
-    <div class="summary-card"><div class="summary-label">Budget food</div><div class="summary-value" id="fcBudget">€ 0</div></div>
-    <div class="summary-card"><div class="summary-label">Costo</div><div class="summary-value" id="fcCost">€ 0</div></div>
-    <div class="summary-card"><div class="summary-label">Utile teorico</div><div class="summary-value" id="fcProfit">€ 0</div></div>
-    <div class="summary-card"><div class="summary-label">Margine medio</div><div class="summary-value" id="fcMargin">0%</div></div>
-  </div>
-  <div class="section-title">Dettaglio</div>
-  <div id="costTable" class="cost-table"></div>
-</section>
-</main>
-
-<div class="actionbar">
-  <div class="actions">
-    <button class="action secondary" id="resetBtn">Azzera quantità</button>
-    <button class="action primary" id="pdfBtn">Crea PDF</button>
-    <button class="action new-quote" id="newQuoteBtn">Nuovo preventivo</button>
-  </div>
-</div>
-</div>
-
-<script>
-const DEFAULT_PRODUCTS = [
-  {name:"Pizza padellino margherita", price:7, pieces:6, cost:1.20, qty:9},
-  {name:"Pizza padellino stagionale", price:9, pieces:6, cost:2.00, qty:9},
-  {name:"Churros salati", price:7, pieces:6, cost:1.50, qty:10},
-  {name:"Farinata", price:6, pieces:8, cost:1.00, qty:10},
-  {name:"Hummus", price:7, pieces:1, cost:0, qty:10},
-  {name:"Club Sandwich classico", price:15, pieces:4, cost:2.50, qty:9},
-  {name:"Club Sandwich vegetariano", price:13, pieces:4, cost:2.00, qty:9},
-  {name:"Tapas da 6", price:6, pieces:1, cost:0, qty:0},
-  {name:"Tapas da 8", price:8, pieces:1, cost:0, qty:0}
-];
-
-const DEFAULT_BEVERAGE = [
-  {name:"Vino/birra base", price:5, selected:false},
-  {name:"Vino/birra (tutti i disponibili)", price:6, selected:false},
-  {name:"Cocktail classici", price:9, selected:false},
-  {name:"Cocktail da carta drink", price:11, selected:false}
-];
-
-let products=structuredClone(DEFAULT_PRODUCTS);
-let beverages=structuredClone(DEFAULT_BEVERAGE);
-
-const ids=["people","perPerson","proposal","client","phone","date","time","placePreference","notes","publishNotes"];
-const euro=n=>new Intl.NumberFormat("it-IT",{style:"currency",currency:"EUR",minimumFractionDigits:0,maximumFractionDigits:2}).format(Number(n)||0);
-const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
-
-function renderProducts(){
-  document.getElementById("productList").innerHTML=products.map((p,i)=>`
-    <article class="product ${p.qty===0?"zero-qty":""}" id="product-${i}">
-      <div class="product-top">
+<div class="app-shell">
+  <header class="app-header">
+    <div class="brand-row">
+      <div class="brand-lockup">
+        <img src="./assets/images/logo-done.png" alt="D.ONE Torino" class="brand-logo">
         <div>
-          <div class="product-name">${esc(p.name)}</div>
-          <div class="product-meta">${euro(p.price)} cad. · ${p.pieces} pezzi per quantità</div>
-        </div>
-        <div class="quantity">
-          <button onclick="changeQty(${i},-1)">−</button>
-          <input type="number" min="0" inputmode="numeric" value="${p.qty}" oninput="setQty(${i},this.value)">
-          <button onclick="changeQty(${i},1)">+</button>
+          <h1>Preventivi D.ONE</h1>
+          <p>Food & beverage planner</p>
         </div>
       </div>
-      <div class="product-result">
-        <div class="chip">Pezzi totali<strong id="pieces-${i}">0</strong></div>
-        <div class="chip">Spesa totale<strong id="sales-${i}">€ 0</strong></div>
+      <span id="saveState" class="save-state">Salvato</span>
+    </div>
+
+    <nav class="top-tabs" aria-label="Sezioni">
+      <button class="tab active" data-panel="quotePanel">Preventivo</button>
+      <button class="tab" data-panel="archivePanel">Archivio</button>
+      <button class="tab" data-panel="historyPanel">Storico</button>
+      <button class="tab" data-panel="settingsPanel">Impostazioni</button>
+    </nav>
+  </header>
+
+  <section class="sticky-recap" aria-label="Riepilogo">
+    <article class="recap-card recap-food">
+      <span>Food</span><strong id="foodBudgetDock">€ 0</strong>
+    </article>
+    <article class="recap-card recap-bev">
+      <span>Beverage</span><strong id="bevBudgetDock">€ 0</strong>
+    </article>
+    <article class="recap-card recap-spent">
+      <span>Speso</span><strong id="foodSpentDock">€ 0</strong>
+    </article>
+    <article class="recap-card recap-residual" id="residualDock">
+      <span>Residuo</span><strong id="foodResidualDock">€ 0</strong>
+    </article>
+    <article class="recap-card recap-total">
+      <span>Totale</span><strong id="grandBudgetDock">€ 0</strong>
+    </article>
+  </section>
+
+  <main class="app-main">
+    <section id="quotePanel" class="panel active">
+      <div class="section-head">
+        <div>
+          <span class="kicker">Evento</span>
+          <h2>Dati principali</h2>
+        </div>
       </div>
-    </article>`).join("");
-}
 
-function renderBeverages(){
-  const people=Number(document.getElementById("people").value)||0;
-  document.getElementById("beverageList").innerHTML=beverages.map((b,i)=>`
-    <label class="beverage-card ${b.selected?"":"not-selected"}" id="bev-${i}">
-      <input type="checkbox" ${b.selected?"checked":""} onchange="toggleBeverage(${i},this.checked)">
-      <div>
-        <div class="bev-name">${esc(b.name)}</div>
-        <div class="bev-meta">${euro(b.price)} per persona</div>
+      <div class="form-grid">
+        <label class="field accent-teal">
+          <span>Numero persone</span>
+          <input id="people" type="number" min="1" value="1">
+        </label>
+        <label class="field accent-orange">
+          <span>Budget food/persona</span>
+          <input id="perPerson" type="number" min="0" step=".5" value="17">
+        </label>
+        <label class="field">
+          <span>Nome proposta</span>
+          <input id="proposal" value="PROPOSTA A">
+        </label>
+        <label class="field">
+          <span>Cliente</span>
+          <input id="client" placeholder="Nome cliente">
+        </label>
+        <label class="field">
+          <span>Telefono</span>
+          <input id="phone" inputmode="tel" placeholder="Numero di telefono">
+        </label>
+        <label class="field">
+          <span>Data</span>
+          <input id="date" type="date">
+        </label>
+        <label class="field">
+          <span>Ora</span>
+          <input id="time" type="time">
+        </label>
+        <label class="field accent-pink">
+          <span>Preferenza posto</span>
+          <select id="placePreference">
+            <option>Dentro</option>
+            <option>Fuori</option>
+            <option selected>Indifferente</option>
+          </select>
+        </label>
       </div>
-      <div class="bev-total">${euro(b.selected?b.price*people:0)}</div>
-    </label>`).join("");
-}
 
-function renderSettings(){
-  document.getElementById("settingsList").innerHTML=products.map((p,i)=>`
-    <div class="cost-row" style="margin-top:8px">
-      <div class="cost-head">${esc(p.name)}</div>
-      <div class="settings-grid">
-        <div class="mini-field"><label>Prezzo cad.</label><input type="number" step=".1" value="${p.price}" oninput="updateProduct(${i},'price',this.value)"></div>
-        <div class="mini-field"><label>Pezzi cad.</label><input type="number" step="1" value="${p.pieces}" oninput="updateProduct(${i},'pieces',this.value)"></div>
-        <div class="mini-field"><label>Costo cad.</label><input type="number" step=".1" value="${p.cost}" oninput="updateProduct(${i},'cost',this.value)"></div>
-        <div class="mini-field"><label>Nome piatto</label><input value="${esc(p.name)}" oninput="updateProduct(${i},'name',this.value)"></div>
+      <div class="section-head">
+        <div><span class="kicker">Food</span><h2>Selezione piatti</h2></div>
+        <button class="text-button" id="collapseFoodBtn">Comprimi</button>
       </div>
-    </div>`).join("");
-}
+      <div id="productList" class="product-grid"></div>
 
-function renderCostTable(){
-  document.getElementById("costTable").innerHTML=products.map(p=>{
-    const sales=p.price*p.qty,cost=p.cost*p.qty,profit=sales-cost,margin=p.price?((p.price-p.cost)/p.price*100):0;
-    return `<div class="cost-row ${p.qty===0?"zero-qty":""}">
-      <div class="cost-head">${esc(p.name)}</div>
-      <div class="cost-grid">
-        <div class="mini-field"><label>Quantità</label><div class="readonly">${p.qty}</div></div>
-        <div class="mini-field"><label>Costo totale</label><div class="readonly">${euro(cost)}</div></div>
-        <div class="mini-field"><label>Utile</label><div class="readonly">${euro(profit)}</div></div>
-        <div class="mini-field"><label>Prezzo cad.</label><div class="readonly">${euro(p.price)}</div></div>
-        <div class="mini-field"><label>Costo cad.</label><div class="readonly">${euro(p.cost)}</div></div>
-        <div class="mini-field"><label>Margine</label><div class="readonly">${margin.toFixed(1).replace(".",",")}%</div></div>
+      <div class="section-head">
+        <div><span class="kicker">Beverage</span><h2>Selezione bevande</h2></div>
       </div>
-    </div>`;
-  }).join("");
-}
+      <div id="beverageList" class="beverage-grid"></div>
 
-function changeQty(i,d){products[i].qty=Math.max(0,(Number(products[i].qty)||0)+d);renderProducts();calculate()}
-function setQty(i,v){products[i].qty=Math.max(0,Number(v)||0);calculate()}
-function toggleBeverage(i,val){beverages[i].selected=val;renderBeverages();calculate()}
-function updateProduct(i,key,v){
-  products[i][key]=key==="name"?v:Math.max(0,Number(v)||0);
-  renderProducts();calculate()
-}
+      <div class="section-head">
+        <div><span class="kicker">Recap</span><h2>Totale preventivo</h2></div>
+      </div>
+      <div class="summary-grid">
+        <article class="summary-card"><span>Budget food</span><strong id="foodBudget">€ 0</strong></article>
+        <article class="summary-card"><span>Budget beverage</span><strong id="beverageBudget">€ 0</strong></article>
+        <article class="summary-card highlight"><span>Totale preventivo</span><strong id="grandBudget">€ 0</strong></article>
+        <article class="summary-card"><span>Pezzi food</span><strong id="piecesTotal">0</strong></article>
+      </div>
 
-function calculate(){
-  const people=Number(document.getElementById("people").value)||0;
-  const pp=Number(document.getElementById("perPerson").value)||0;
-  const foodBudget=people*pp;
+      <div class="internal-summary">
+        <article><span>Spesa food</span><strong id="foodSpent">€ 0</strong></article>
+        <article><span>Costo interno</span><strong id="costTotal">€ 0</strong></article>
+        <article><span>Utile stimato</span><strong id="profitTotal">€ 0</strong></article>
+        <article><span>Residuo food</span><strong id="foodResidual">€ 0</strong></article>
+      </div>
 
-  let foodSpent=0,pieces=0,cost=0,weightedMargin=0,weightedSales=0;
-  products.forEach((p,i)=>{
-    const sales=p.price*p.qty, pcs=p.pieces*p.qty, c=p.cost*p.qty;
-    foodSpent+=sales;pieces+=pcs;cost+=c;
-    weightedMargin+=(p.price-p.cost)*p.qty;weightedSales+=sales;
-    const pe=document.getElementById(`pieces-${i}`),se=document.getElementById(`sales-${i}`),row=document.getElementById(`product-${i}`);
-    if(pe)pe.textContent=pcs;if(se)se.textContent=euro(sales);if(row)row.classList.toggle("zero-qty",p.qty===0);
-  });
+      <div class="section-head">
+        <div><span class="kicker">Dettagli</span><h2>Note</h2></div>
+      </div>
+      <div class="notes-card" id="notesCard">
+        <textarea id="notes" placeholder="Allergie, richieste particolari, dettagli organizzativi..."></textarea>
+        <label class="toggle-line">
+          <input id="publishNotes" type="checkbox" checked>
+          <span>Includi le note nel PDF</span>
+        </label>
+      </div>
+    </section>
 
-  let beverageBudget=0;
-  beverages.forEach(b=>{if(b.selected)beverageBudget+=b.price*people});
-  const grandBudget=foodBudget+beverageBudget;
-  const foodResidual=foodBudget-foodSpent;
-  const profit=foodSpent-cost;
+    <section id="archivePanel" class="panel">
+      <div class="section-head">
+        <div><span class="kicker">Salvati</span><h2>Archivio preventivi</h2></div>
+      </div>
+      <div class="archive-toolbar">
+        <input id="archiveSearch" placeholder="Cerca cliente, telefono, proposta o data">
+        <span id="archiveCount">0</span>
+      </div>
+      <div id="archiveList" class="archive-list"></div>
+    </section>
 
-  document.getElementById("foodBudgetDock").textContent=euro(foodBudget);
-  document.getElementById("bevBudgetDock").textContent=euro(beverageBudget);
-  document.getElementById("foodSpentDock").textContent=euro(foodSpent);
-  document.getElementById("foodResidualDock").textContent=euro(foodResidual);
-  document.getElementById("grandBudgetDock").textContent=euro(grandBudget);
-  document.getElementById("residualDock").classList.toggle("negative",foodResidual<0);
+    <section id="historyPanel" class="panel">
+      <div class="section-head">
+        <div><span class="kicker">Versioni</span><h2>Storico modifiche</h2></div>
+      </div>
+      <div id="historyList" class="history-list"></div>
+    </section>
 
-  document.getElementById("foodBudget").textContent=euro(foodBudget);
-  document.getElementById("beverageBudget").textContent=euro(beverageBudget);
-  document.getElementById("grandBudget").textContent=euro(grandBudget);
-  document.getElementById("piecesTotal").textContent=pieces;
+    <section id="settingsPanel" class="panel">
+      <div class="section-head">
+        <div><span class="kicker">Catalogo</span><h2>Piatti, prezzi e costi</h2></div>
+      </div>
+      <div id="settingsList" class="settings-list"></div>
+      <div class="section-head">
+        <div><span class="kicker">Beverage</span><h2>Prezzi per persona</h2></div>
+      </div>
+      <div id="beverageSettings" class="settings-list"></div>
+    </section>
+  </main>
 
-  document.getElementById("foodSpent").textContent=euro(foodSpent);
-  document.getElementById("costTotal").textContent=euro(cost);
-  document.getElementById("profitTotal").textContent=euro(profit);
-  document.getElementById("foodResidual").textContent=euro(foodResidual);
+  <footer class="bottom-actions">
+    <button id="resetBtn" class="btn btn-muted">Azzera quantità</button>
+    <button id="pdfBtn" class="btn btn-primary">Crea PDF</button>
+    <button id="saveQuoteBtn" class="btn btn-success">Salva</button>
+    <button id="duplicateCurrentBtn" class="btn btn-warm">Duplica</button>
+    <button id="newQuoteBtn" class="btn btn-dark btn-wide">Nuovo preventivo</button>
+  </footer>
+</div>
 
-  document.getElementById("fcBudget").textContent=euro(foodBudget);
-  document.getElementById("fcCost").textContent=euro(cost);
-  document.getElementById("fcProfit").textContent=euro(foodBudget-cost);
-  document.getElementById("fcMargin").textContent=(weightedSales?weightedMargin/weightedSales*100:0).toFixed(1).replace(".",",")+"%";
-
-  document.getElementById("notesCard").classList.toggle("hide-in-pdf",!document.getElementById("publishNotes").checked);
-
-  renderBeverages();
-  renderCostTable();
-  save();
-}
-
-function save(){
-  document.getElementById("saveState").textContent="Salvataggio…";
-  const data={products,beverages};
-  ids.forEach(id=>{
-    const el=document.getElementById(id);
-    data[id]=el.type==="checkbox"?el.checked:el.value;
-  });
-  try{localStorage.setItem("done-preventivi-v1-0",JSON.stringify(data))}catch(e){}
-  setTimeout(()=>document.getElementById("saveState").textContent="Salvato",150);
-}
-
-function load(){
-  try{
-    const d=JSON.parse(localStorage.getItem("done-preventivi-v1-0"));
-    if(!d)return;
-    ids.forEach(id=>{
-      const el=document.getElementById(id);
-      if(d[id]!==undefined){
-        if(el.type==="checkbox")el.checked=!!d[id];else el.value=d[id];
-      }
-    });
-    if(Array.isArray(d.products))products=d.products;
-    if(Array.isArray(d.beverages))beverages=d.beverages;
-  }catch(e){}
-}
-
-document.getElementById("resetBtn").addEventListener("click",()=>{
-  if(confirm("Azzerare quantità food e selezioni beverage?")){
-    products.forEach(p=>p.qty=0);beverages.forEach(b=>b.selected=false);
-    renderProducts();renderBeverages();calculate();
-  }
-});
-
-function cleanFilePart(value){
-  return String(value || "")
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g,"")
-    .replace(/[^a-zA-Z0-9_-]+/g,"")
-    .trim();
-}
-
-function formatPdfDate(value){
-  if(!value) return "";
-  const parts=value.split("-");
-  if(parts.length!==3) return cleanFilePart(value);
-  return `${parts[2]}-${parts[1]}-${parts[0].slice(-2)}`;
-}
-
-function createPdf(){
-  const datePart=formatPdfDate(document.getElementById("date").value) || "senza-data";
-  const clientPart=cleanFilePart(document.getElementById("client").value) || "cliente";
-  const rawProposal=(document.getElementById("proposal").value || "PROPOSTA A").trim();
-  const match=rawProposal.match(/proposta\s*([a-z0-9]+)/i);
-  const proposalPart=match
-    ? `proposta${match[1].charAt(0).toUpperCase()}${match[1].slice(1).toLowerCase()}`
-    : cleanFilePart(rawProposal) || "propostaA";
-
-  const oldTitle=document.title;
-  document.title=`${datePart}_${clientPart}_${proposalPart}`;
-  window.print();
-  setTimeout(()=>{document.title=oldTitle},1200);
-}
-
-function newQuote(){
-  if(!confirm("Creare un nuovo preventivo e cancellare i dati attuali?")) return;
-
-  products.forEach(p=>p.qty=0);
-  beverages.forEach(b=>b.selected=false);
-
-  document.getElementById("proposal").value="PROPOSTA A";
-  document.getElementById("client").value="";
-  document.getElementById("phone").value="";
-  document.getElementById("date").value="";
-  document.getElementById("time").value="";
-  document.getElementById("notes").value="";
-  document.getElementById("placePreference").value="Indifferente";
-
-  renderProducts();
-  renderBeverages();
-  calculate();
-  window.scrollTo({top:0,behavior:"smooth"});
-}
-
-document.getElementById("pdfBtn").addEventListener("click",createPdf);
-document.getElementById("newQuoteBtn").addEventListener("click",newQuote);
-
-
-ids.forEach(id=>{
-  const el=document.getElementById(id);
-  el.addEventListener(el.type==="checkbox"?"change":"input",calculate);
-});
-
-document.querySelectorAll(".tab").forEach(btn=>btn.addEventListener("click",()=>{
-  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
-  document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));
-  btn.classList.add("active");
-  document.getElementById(btn.dataset.panel).classList.add("active");
-}));
-
-load();
-renderProducts();
-renderSettings();
-renderBeverages();
-calculate();
-
-if("serviceWorker" in navigator){
-  window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
-}
-</script>
+<script src="./assets/js/data.js"></script>
+<script src="./assets/js/app.js"></script>
 </body>
 </html>
