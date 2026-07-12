@@ -1,610 +1,286 @@
 <!doctype html>
 <html lang="it">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#f5f5f7">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="Preventivi D.ONE">
-  <link rel="manifest" href="./manifest.webmanifest">
-  <link rel="apple-touch-icon" href="./icons/icon-180.png">
-  <title>Preventivi D.ONE</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F3E7D3">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Preventivi D.ONE">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./icons/icon-180.png">
+<title>Preventivi D.ONE</title>
 
-  <style>
-    :root{
-      --bg:#f5f5f7;
-      --card:rgba(255,255,255,.88);
-      --ink:#1d1d1f;
-      --muted:#6e6e73;
-      --line:rgba(60,60,67,.16);
-      --blue:#0a84ff;
-      --green:#30d158;
-      --orange:#ff9f0a;
-      --red:#ff453a;
-      --yellow:#ffd60a;
-      --shadow:0 10px 30px rgba(0,0,0,.07);
-      --radius:22px;
-    }
-
-    *{box-sizing:border-box}
-    html{background:var(--bg)}
-    body{
-      margin:0;
-      background:
-        radial-gradient(circle at top left, rgba(10,132,255,.10), transparent 28%),
-        radial-gradient(circle at top right, rgba(48,209,88,.08), transparent 24%),
-        var(--bg);
-      color:var(--ink);
-      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Segoe UI",sans-serif;
-      padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
-      -webkit-font-smoothing:antialiased;
-    }
-
-    button,input{font:inherit}
-    button{-webkit-tap-highlight-color:transparent}
-    .app{max-width:920px;margin:auto;min-height:100vh}
-
-    header{
-      position:sticky;
-      top:0;
-      z-index:40;
-      background:rgba(245,245,247,.82);
-      backdrop-filter:saturate(180%) blur(22px);
-      -webkit-backdrop-filter:saturate(180%) blur(22px);
-      border-bottom:1px solid var(--line);
-      padding:12px 14px 10px;
-    }
-
-    .brand{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:12px;
-      max-width:892px;
-      margin:auto;
-    }
-
-    h1{
-      margin:0;
-      font-size:26px;
-      line-height:1.05;
-      letter-spacing:-.7px;
-      font-weight:780;
-    }
-
-    .eyebrow{
-      font-size:12px;
-      color:var(--muted);
-      margin-top:5px;
-      font-weight:600;
-    }
-
-    #saveState{
-      font-size:12px;
-      color:var(--muted);
-      padding-top:4px;
-      white-space:nowrap;
-    }
-
-    .tabs{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:4px;
-      margin:12px auto 0;
-      max-width:892px;
-      padding:4px;
-      border-radius:14px;
-      background:rgba(118,118,128,.12);
-    }
-
-    .tab{
-      border:0;
-      border-radius:10px;
-      background:transparent;
-      color:var(--muted);
-      padding:9px 8px;
-      font-size:14px;
-      font-weight:700;
-    }
-
-    .tab.active{
-      background:#fff;
-      color:var(--ink);
-      box-shadow:0 2px 8px rgba(0,0,0,.08);
-    }
-
-    .budget-dock{
-      position:sticky;
-      top:104px;
-      z-index:35;
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:8px;
-      padding:10px 12px 2px;
-      background:linear-gradient(to bottom, rgba(245,245,247,.96) 72%, rgba(245,245,247,0));
-      backdrop-filter:blur(10px);
-      -webkit-backdrop-filter:blur(10px);
-    }
-
-    .dock-card{
-      min-width:0;
-      border-radius:17px;
-      background:rgba(255,255,255,.94);
-      border:1px solid rgba(255,255,255,.9);
-      box-shadow:0 6px 20px rgba(0,0,0,.07);
-      padding:10px 9px;
-    }
-
-    .dock-label{
-      font-size:9px;
-      line-height:1.1;
-      letter-spacing:.4px;
-      text-transform:uppercase;
-      color:var(--muted);
-      font-weight:800;
-      white-space:nowrap;
-    }
-
-    .dock-value{
-      margin-top:4px;
-      font-size:17px;
-      line-height:1;
-      font-weight:800;
-      letter-spacing:-.4px;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-
-    .dock-card.residual-positive .dock-value{color:#16853a}
-    .dock-card.residual-negative{
-      background:rgba(255,69,58,.12);
-      border-color:rgba(255,69,58,.18);
-    }
-    .dock-card.residual-negative .dock-value{color:var(--red)}
-
-    main{padding:8px 12px 118px}
-    .panel{display:none}
-    .panel.active{display:block}
-
-    .section-title{
-      margin:22px 4px 9px;
-      font-size:13px;
-      font-weight:750;
-      color:var(--muted);
-      letter-spacing:-.1px;
-    }
-
-    .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-
-    .field,.metric,.card,.product,.cost-row,details{
-      background:var(--card);
-      border:1px solid rgba(255,255,255,.78);
-      box-shadow:var(--shadow);
-      backdrop-filter:blur(18px);
-      -webkit-backdrop-filter:blur(18px);
-    }
-
-    .field{
-      border-radius:18px;
-      padding:12px 13px;
-    }
-
-    .field label,.metric .label{
-      display:block;
-      font-size:10px;
-      font-weight:800;
-      letter-spacing:.36px;
-      text-transform:uppercase;
-      color:var(--muted);
-      margin-bottom:6px;
-    }
-
-    .field input{
-      width:100%;
-      min-width:0;
-      border:0;
-      outline:0;
-      background:transparent;
-      color:var(--ink);
-      font-size:18px;
-      font-weight:700;
-      padding:0;
-    }
-
-    .field-accent-blue{background:rgba(10,132,255,.10)}
-    .field-accent-orange{background:rgba(255,159,10,.12)}
-
-    .product-list{display:grid;gap:10px}
-
-    .product{
-      border-radius:var(--radius);
-      padding:14px;
-    }
-
-    .product-top{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:12px;
-    }
-
-    .product-name{
-      font-size:17px;
-      line-height:1.18;
-      font-weight:760;
-      letter-spacing:-.25px;
-    }
-
-    .product-meta{
-      font-size:12px;
-      color:var(--muted);
-      margin-top:5px;
-      line-height:1.35;
-    }
-
-    .quantity{
-      flex:0 0 auto;
-      display:grid;
-      grid-template-columns:40px 52px 40px;
-      border-radius:14px;
-      overflow:hidden;
-      background:rgba(118,118,128,.10);
-      border:1px solid var(--line);
-    }
-
-    .quantity button{
-      border:0;
-      background:transparent;
-      color:var(--blue);
-      font-size:22px;
-      font-weight:500;
-      height:42px;
-    }
-
-    .quantity button:active{background:rgba(10,132,255,.10)}
-
-    .quantity input{
-      width:52px;
-      border:0;
-      text-align:center;
-      background:#fff;
-      color:var(--ink);
-      font-size:18px;
-      font-weight:780;
-      outline:0;
-      border-left:1px solid var(--line);
-      border-right:1px solid var(--line);
-    }
-
-    .product-result{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:8px;
-      margin-top:11px;
-    }
-
-    .chip{
-      border-radius:13px;
-      padding:9px 10px;
-      background:rgba(118,118,128,.08);
-      color:var(--muted);
-      font-size:11px;
-      font-weight:650;
-    }
-
-    .chip strong{
-      display:block;
-      margin-top:2px;
-      color:var(--ink);
-      font-size:16px;
-      font-weight:780;
-    }
-
-    .summary{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
-      margin-top:10px;
-    }
-
-    .summary .card{
-      border-radius:18px;
-      padding:13px;
-    }
-
-    .summary-label{
-      color:var(--muted);
-      font-size:11px;
-      font-weight:700;
-    }
-
-    .summary-value{
-      margin-top:4px;
-      font-size:23px;
-      font-weight:800;
-      letter-spacing:-.5px;
-    }
-
-    .actionbar{
-      position:fixed;
-      left:0;
-      right:0;
-      bottom:0;
-      z-index:50;
-      padding:10px max(12px,env(safe-area-inset-left)) calc(10px + env(safe-area-inset-bottom));
-      background:rgba(245,245,247,.84);
-      border-top:1px solid var(--line);
-      backdrop-filter:saturate(180%) blur(22px);
-      -webkit-backdrop-filter:saturate(180%) blur(22px);
-    }
-
-    .actions{
-      max-width:896px;
-      margin:auto;
-      display:grid;
-      grid-template-columns:1fr 1.35fr;
-      gap:9px;
-    }
-
-    .action{
-      border:0;
-      border-radius:15px;
-      padding:14px 10px;
-      font-size:15px;
-      font-weight:760;
-    }
-
-    .secondary{background:rgba(118,118,128,.14);color:var(--ink)}
-    .primary{background:var(--blue);color:#fff}
-    .action:active{transform:scale(.985)}
-
-    details{
-      border-radius:18px;
-      padding:12px 13px;
-    }
-
-    summary{
-      cursor:pointer;
-      font-weight:750;
-      color:var(--ink);
-    }
-
-    .notice{
-      color:var(--muted);
-      font-size:12px;
-      line-height:1.45;
-      margin:10px 2px;
-    }
-
-    .settings-grid,.cost-grid{
-      display:grid;
-      grid-template-columns:repeat(2,1fr);
-      gap:8px;
-      margin-top:9px;
-    }
-
-    .cost-table{display:grid;gap:10px}
-    .cost-row{border-radius:18px;padding:12px}
-    .cost-head{font-weight:760;margin-bottom:8px}
-
-    .mini-field{
-      background:rgba(118,118,128,.08);
-      border-radius:12px;
-      padding:8px 9px;
-    }
-
-    .mini-field label{
-      display:block;
-      color:var(--muted);
-      font-size:9px;
-      font-weight:800;
-      text-transform:uppercase;
-      letter-spacing:.35px;
-    }
-
-    .mini-field input{
-      width:100%;
-      border:0;
-      outline:0;
-      background:transparent;
-      color:var(--ink);
-      font-weight:700;
-      margin-top:4px;
-    }
-
-    .readonly{
-      margin-top:4px;
-      font-size:15px;
-      font-weight:750;
-    }
-
-    @media(min-width:700px){
-      .budget-dock{top:104px}
-      .grid{grid-template-columns:repeat(4,1fr)}
-      .product-list{grid-template-columns:1fr 1fr}
-      .summary{grid-template-columns:repeat(4,1fr)}
-      .settings-grid{grid-template-columns:repeat(4,1fr)}
-      .cost-grid{grid-template-columns:repeat(3,1fr)}
-    }
-
-    @media(max-width:430px){
-      .dock-label{font-size:8px}
-      .dock-value{font-size:15px}
-      .budget-dock{gap:6px;padding-left:8px;padding-right:8px}
-      .dock-card{padding:9px 7px}
-      h1{font-size:24px}
-    }
-
-    @media print{
-      html,body,.app{background:#fff!important}
-      header,.actionbar,.tabs,details,.no-print,#costPanel{display:none!important}
-      main{padding:0!important}
-      .budget-dock{
-        position:static!important;
-        grid-template-columns:repeat(4,1fr)!important;
-        padding:0 0 12px!important;
-        background:#fff!important;
-        backdrop-filter:none!important;
-      }
-      .dock-card,.field,.product,.summary .card{
-        box-shadow:none!important;
-        backdrop-filter:none!important;
-        border:1px solid #d7d7d7!important;
-        background:#fff!important;
-      }
-      .panel{display:block!important}
-      .product.zero-qty{display:none!important}
-      .quantity button{display:none!important}
-      .quantity{
-        grid-template-columns:52px!important;
-        border:1px solid #bbb!important;
-      }
-      .quantity input{
-        border:0!important;
-      }
-      .section-title{margin-top:14px}
-      .product-list{display:block!important}
-      .product{break-inside:avoid;margin-bottom:8px}
-    }
-  </style>
+<style>
+:root{
+  --cream:#F3E7D3;
+  --paper:#FFF9F0;
+  --ink:#222222;
+  --muted:#6F675D;
+  --teal:#74A9A6;
+  --orange:#EF6A4A;
+  --mustard:#E6B450;
+  --green:#78A97B;
+  --pink:#DFA0A7;
+  --blue:#6C8EBF;
+  --yellow:#F6D85E;
+  --line:#D8CBB9;
+  --danger:#C84E4E;
+}
+*{box-sizing:border-box}
+html{background:var(--cream)}
+body{
+  margin:0;background:var(--cream);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+}
+button,input,textarea,select{font:inherit}
+.app{max-width:920px;margin:auto;min-height:100vh}
+header{
+  position:sticky;top:0;z-index:40;
+  background:var(--ink);color:#fff;
+  padding:14px 14px 11px;
+  border-bottom:4px solid var(--mustard);
+}
+.brand{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+h1{margin:0;font-size:24px;line-height:1;font-weight:900;letter-spacing:-.4px}
+.sub{font-size:12px;color:#d8d8d8;margin-top:5px}
+#saveState{font-size:12px;color:#d8d8d8;padding-top:3px}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:12px}
+.tab{border:0;border-radius:8px;padding:10px 8px;font-weight:900;background:#3a3a3a;color:#aaa}
+.tab.active{background:var(--yellow);color:var(--ink)}
+.budget-dock{
+  position:sticky;top:103px;z-index:35;
+  display:grid;grid-template-columns:repeat(5,1fr);gap:6px;
+  padding:8px 8px 10px;background:var(--cream);
+  border-bottom:2px solid var(--line);
+}
+.dock-card{padding:10px 7px;border-radius:8px;color:var(--ink);min-width:0}
+.dock-card:nth-child(1){background:var(--mustard)}
+.dock-card:nth-child(2){background:var(--teal)}
+.dock-card:nth-child(3){background:var(--orange)}
+.dock-card:nth-child(4){background:var(--green)}
+.dock-card:nth-child(5){background:var(--blue);color:#fff}
+.dock-label{font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:.35px;white-space:nowrap}
+.dock-value{font-size:16px;font-weight:950;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dock-card.negative{background:var(--danger)!important;color:#fff}
+main{padding:10px 10px 120px}
+.panel{display:none}.panel.active{display:block}
+.section-title{
+  margin:20px 2px 8px;font-size:13px;font-weight:950;text-transform:uppercase;
+  letter-spacing:.65px;color:var(--ink)
+}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.field,.metric,.product,.summary-card,.cost-row,details,.beverage-card,.notes-card{
+  border:2px solid var(--ink);border-radius:10px;background:var(--paper)
+}
+.field{padding:10px 11px}
+.field label,.metric-label{
+  display:block;font-size:9px;font-weight:950;text-transform:uppercase;letter-spacing:.45px;margin-bottom:5px
+}
+.field input,.field select{
+  width:100%;border:0;background:transparent;outline:0;font-size:17px;font-weight:900;color:var(--ink)
+}
+.field.people{background:var(--teal)}
+.field.pp{background:var(--orange)}
+.field.place{background:var(--pink)}
+.product-list{display:grid;gap:8px}
+.product{padding:12px;background:var(--paper)}
+.product-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.product-name{font-size:16px;font-weight:950;line-height:1.15}
+.product-meta{font-size:12px;color:var(--muted);margin-top:4px}
+.quantity{
+  display:grid;grid-template-columns:40px 58px 40px;
+  border:3px solid var(--ink);border-radius:8px;overflow:hidden;flex:0 0 auto
+}
+.quantity button{height:44px;border:0;background:var(--ink);color:#fff;font-size:23px;font-weight:950}
+.quantity input{
+  width:58px;border:0;text-align:center;background:var(--yellow);color:var(--ink);
+  font-size:22px;font-weight:950;outline:0
+}
+.product-result{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}
+.chip{padding:8px 9px;border-radius:7px;background:var(--teal);font-size:11px;font-weight:800}
+.chip:nth-child(2){background:var(--mustard)}
+.chip strong{display:block;font-size:16px;margin-top:2px}
+.beverage-grid{display:grid;gap:8px}
+.beverage-card{
+  display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:center;
+  padding:11px;background:var(--paper)
+}
+.beverage-card input[type="checkbox"]{width:22px;height:22px;accent-color:var(--orange)}
+.bev-name{font-weight:950;font-size:15px}
+.bev-meta{font-size:12px;color:var(--muted);margin-top:3px}
+.bev-total{font-size:17px;font-weight:950;white-space:nowrap}
+.summary{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.summary-card{padding:11px}
+.summary-card:nth-child(1){background:var(--mustard)}
+.summary-card:nth-child(2){background:var(--teal)}
+.summary-card:nth-child(3){background:var(--orange)}
+.summary-card:nth-child(4){background:var(--green)}
+.summary-label{font-size:10px;font-weight:950;text-transform:uppercase}
+.summary-value{font-size:22px;font-weight:950;margin-top:4px}
+.notes-card{padding:11px;background:var(--paper)}
+.notes-card textarea{
+  width:100%;min-height:110px;resize:vertical;border:2px solid var(--ink);
+  border-radius:8px;padding:10px;background:#fff;font-size:15px;outline:0
+}
+.note-toggle{display:flex;align-items:center;gap:9px;margin-top:10px;font-weight:900}
+.note-toggle input{width:20px;height:20px;accent-color:var(--green)}
+.actionbar{
+  position:fixed;left:0;right:0;bottom:0;z-index:50;
+  padding:9px max(10px,env(safe-area-inset-left)) calc(9px + env(safe-area-inset-bottom));
+  background:var(--cream);border-top:2px solid var(--ink)
+}
+.actions{max-width:900px;margin:auto;display:grid;grid-template-columns:1fr 1.35fr;gap:8px}
+.action{border:2px solid var(--ink);border-radius:8px;padding:14px 10px;font-weight:950}
+.secondary{background:var(--paper);color:var(--ink)}
+.primary{background:var(--orange);color:#fff}
+details{padding:11px;background:var(--paper)}
+summary{font-weight:950;cursor:pointer}
+.notice{font-size:12px;color:var(--muted);line-height:1.45;margin:9px 2px}
+.settings-grid,.cost-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-top:8px}
+.cost-table{display:grid;gap:8px}
+.cost-row{padding:10px;background:var(--paper)}
+.cost-head{font-weight:950;margin-bottom:7px}
+.mini-field{background:#fff;border:1px solid var(--line);border-radius:7px;padding:7px}
+.mini-field label{display:block;font-size:9px;text-transform:uppercase;font-weight:950;color:var(--muted)}
+.mini-field input{width:100%;border:0;background:transparent;outline:0;font-weight:900;margin-top:3px}
+.readonly{font-size:15px;font-weight:950;margin-top:3px}
+.pdf-only{display:none}
+@media(min-width:700px){
+  .grid{grid-template-columns:repeat(4,1fr)}
+  .product-list{grid-template-columns:1fr 1fr}
+  .beverage-grid{grid-template-columns:1fr 1fr}
+  .summary{grid-template-columns:repeat(4,1fr)}
+  .settings-grid{grid-template-columns:repeat(4,1fr)}
+  .cost-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:470px){
+  .budget-dock{grid-template-columns:repeat(5,1fr);gap:4px;padding-left:4px;padding-right:4px}
+  .dock-card{padding:8px 4px}
+  .dock-label{font-size:7px}
+  .dock-value{font-size:13px}
+  .quantity{grid-template-columns:36px 52px 36px}
+  .quantity input{width:52px}
+}
+@media print{
+  html,body,.app{background:#fff!important}
+  header,.actionbar,.tabs,details,#costPanel,.internal-only,.no-print{display:none!important}
+  main{padding:0!important}
+  .panel{display:block!important}
+  .budget-dock{position:static!important;padding:0 0 10px!important;background:#fff!important;border:0!important}
+  .product.zero-qty,.beverage-card.not-selected{display:none!important}
+  .quantity button{display:none!important}
+  .quantity{grid-template-columns:58px!important;border:2px solid #222!important}
+  .quantity input{border:0!important}
+  .product,.field,.summary-card,.beverage-card,.notes-card{break-inside:avoid}
+  .pdf-only{display:block!important}
+  .notes-card.hide-in-pdf{display:none!important}
+}
+</style>
 </head>
 
 <body>
 <div class="app">
-  <header>
-    <div class="brand">
-      <div>
-        <h1>Preventivi D.ONE</h1>
-        <div class="eyebrow">Preventivo rapido per eventi e gruppi</div>
-      </div>
-      <div id="saveState">Salvato</div>
-    </div>
+<header>
+  <div class="brand">
+    <div><h1>Preventivi D.ONE</h1><div class="sub">Food + beverage</div></div>
+    <div id="saveState">Salvato</div>
+  </div>
+  <div class="tabs">
+    <button class="tab active" data-panel="quotePanel">Preventivo</button>
+    <button class="tab" data-panel="costPanel">Food cost</button>
+  </div>
+</header>
 
-    <div class="tabs">
-      <button class="tab active" data-panel="quotePanel">Preventivo</button>
-      <button class="tab" data-panel="costPanel">Food cost</button>
-    </div>
-  </header>
+<div class="budget-dock">
+  <div class="dock-card"><div class="dock-label">Food budget</div><div class="dock-value" id="foodBudgetDock">€ 0</div></div>
+  <div class="dock-card"><div class="dock-label">Beverage</div><div class="dock-value" id="bevBudgetDock">€ 0</div></div>
+  <div class="dock-card"><div class="dock-label">Speso food</div><div class="dock-value" id="foodSpentDock">€ 0</div></div>
+  <div class="dock-card" id="residualDock"><div class="dock-label">Residuo food</div><div class="dock-value" id="foodResidualDock">€ 0</div></div>
+  <div class="dock-card"><div class="dock-label">Totale</div><div class="dock-value" id="grandBudgetDock">€ 0</div></div>
+</div>
 
-  <div class="budget-dock">
-    <div class="dock-card">
-      <div class="dock-label">Budget</div>
-      <div class="dock-value" id="budgetTotal">€ 0</div>
-    </div>
-    <div class="dock-card">
-      <div class="dock-label">Speso</div>
-      <div class="dock-value" id="salesDock">€ 0</div>
-    </div>
-    <div class="dock-card residual-positive" id="residualDock">
-      <div class="dock-label">Residuo</div>
-      <div class="dock-value" id="budgetResidual">€ 0</div>
-    </div>
-    <div class="dock-card">
-      <div class="dock-label">Pezzi</div>
-      <div class="dock-value" id="piecesDock">0</div>
+<main>
+<section id="quotePanel" class="panel active">
+
+  <div class="section-title">Dati evento</div>
+  <div class="grid">
+    <div class="field people"><label>Numero persone</label><input id="people" type="number" min="1" value="1"></div>
+    <div class="field pp"><label>Budget food per persona</label><input id="perPerson" type="number" min="0" step=".5" value="17"></div>
+    <div class="field"><label>Nome proposta</label><input id="proposal" value="PROPOSTA B"></div>
+    <div class="field"><label>Cliente</label><input id="client" value="Carlotta"></div>
+    <div class="field"><label>Telefono</label><input id="phone" inputmode="tel" value="3669717904"></div>
+    <div class="field"><label>Data</label><input id="date" type="date" value="2026-07-24"></div>
+    <div class="field"><label>Ora</label><input id="time" type="time" value="19:30"></div>
+    <div class="field place">
+      <label>Preferenza posto</label>
+      <select id="placePreference">
+        <option value="Dentro">Dentro</option>
+        <option value="Fuori">Fuori</option>
+        <option value="Indifferente" selected>Indifferente</option>
+      </select>
     </div>
   </div>
 
-  <main>
-    <section id="quotePanel" class="panel active">
-      <div class="section-title">Impostazioni evento</div>
-      <div class="grid">
-        <div class="field field-accent-blue">
-          <label>Numero persone</label>
-          <input id="people" type="number" min="1" value="1">
-        </div>
-        <div class="field field-accent-orange">
-          <label>Spesa per persona</label>
-          <input id="perPerson" type="number" min="0" step="0.50" value="17">
-        </div>
-        <div class="field">
-          <label>Nome proposta</label>
-          <input id="proposal" value="PROPOSTA B">
-        </div>
-        <div class="field">
-          <label>Cliente</label>
-          <input id="client" value="Carlotta">
-        </div>
-        <div class="field">
-          <label>Telefono</label>
-          <input id="phone" inputmode="tel" value="3669717904">
-        </div>
-        <div class="field">
-          <label>Data</label>
-          <input id="date" type="date" value="2026-07-24">
-        </div>
-        <div class="field">
-          <label>Ora</label>
-          <input id="time" type="time" value="19:30">
-        </div>
-      </div>
+  <div class="section-title">Piatti</div>
+  <div id="productList" class="product-list"></div>
 
-      <div class="section-title">Piatti</div>
-      <div id="productList" class="product-list"></div>
+  <div class="section-title">Beverage</div>
+  <div class="notice">Ogni opzione selezionata viene calcolata per il numero totale di persone.</div>
+  <div id="beverageList" class="beverage-grid"></div>
 
-      <div class="section-title">Riepilogo</div>
-      <div class="summary">
-        <div class="card">
-          <div class="summary-label">Spesa totale</div>
-          <div class="summary-value" id="salesTotal">€ 0</div>
-        </div>
-        <div class="card">
-          <div class="summary-label">Pezzi totali</div>
-          <div class="summary-value" id="piecesTotal">0</div>
-        </div>
-        <div class="card">
-          <div class="summary-label">Costo totale</div>
-          <div class="summary-value" id="costTotal">€ 0</div>
-        </div>
-        <div class="card">
-          <div class="summary-label">Utile stimato</div>
-          <div class="summary-value" id="profitTotal">€ 0</div>
-        </div>
-      </div>
-
-      <div class="section-title no-print">Impostazioni avanzate</div>
-      <details>
-        <summary>Modifica piatti, prezzi, resa e costi</summary>
-        <div class="notice">Le modifiche restano salvate soltanto su questo dispositivo.</div>
-        <div id="settingsList"></div>
-      </details>
-    </section>
-
-    <section id="costPanel" class="panel">
-      <div class="section-title">Riepilogo food cost</div>
-      <div class="summary">
-        <div class="card">
-          <div class="summary-label">Budget totale</div>
-          <div class="summary-value" id="fcBudget">€ 0</div>
-        </div>
-        <div class="card">
-          <div class="summary-label">Costo</div>
-          <div class="summary-value" id="fcCost">€ 0</div>
-        </div>
-        <div class="card">
-          <div class="summary-label">Differenza utile</div>
-          <div class="summary-value" id="fcProfit">€ 0</div>
-        </div>
-        <div class="card">
-          <div class="summary-label">Margine medio</div>
-          <div class="summary-value" id="fcMargin">0%</div>
-        </div>
-      </div>
-
-      <div class="section-title">Dettaglio</div>
-      <div id="costTable" class="cost-table"></div>
-      <div class="notice">Le voci con quantità pari a zero non vengono incluse nel PDF.</div>
-    </section>
-  </main>
-
-  <div class="actionbar">
-    <div class="actions">
-      <button class="action secondary" id="resetBtn">Azzera quantità</button>
-      <button class="action primary" onclick="window.print()">Crea PDF</button>
-    </div>
+  <div class="section-title">Recap preventivo</div>
+  <div class="summary">
+    <div class="summary-card"><div class="summary-label">Budget food</div><div class="summary-value" id="foodBudget">€ 0</div></div>
+    <div class="summary-card"><div class="summary-label">Budget beverage</div><div class="summary-value" id="beverageBudget">€ 0</div></div>
+    <div class="summary-card"><div class="summary-label">Totale preventivo</div><div class="summary-value" id="grandBudget">€ 0</div></div>
+    <div class="summary-card"><div class="summary-label">Pezzi food</div><div class="summary-value" id="piecesTotal">0</div></div>
   </div>
+
+  <div class="summary internal-only" style="margin-top:8px">
+    <div class="summary-card"><div class="summary-label">Spesa food selezionata</div><div class="summary-value" id="foodSpent">€ 0</div></div>
+    <div class="summary-card"><div class="summary-label">Costo totale interno</div><div class="summary-value" id="costTotal">€ 0</div></div>
+    <div class="summary-card"><div class="summary-label">Utile stimato interno</div><div class="summary-value" id="profitTotal">€ 0</div></div>
+    <div class="summary-card"><div class="summary-label">Residuo food</div><div class="summary-value" id="foodResidual">€ 0</div></div>
+  </div>
+
+  <div class="section-title">Note</div>
+  <div class="notes-card" id="notesCard">
+    <textarea id="notes" placeholder="Scrivi qui note, richieste particolari, allergie, dettagli organizzativi..."></textarea>
+    <label class="note-toggle">
+      <input id="publishNotes" type="checkbox" checked>
+      Includi le note nel PDF esportato
+    </label>
+  </div>
+
+  <div class="section-title no-print">Impostazioni avanzate</div>
+  <details>
+    <summary>Modifica piatti, prezzi, resa e costi</summary>
+    <div class="notice">Le modifiche vengono salvate solo su questo dispositivo.</div>
+    <div id="settingsList"></div>
+  </details>
+</section>
+
+<section id="costPanel" class="panel">
+  <div class="section-title">Riepilogo food cost</div>
+  <div class="summary">
+    <div class="summary-card"><div class="summary-label">Budget food</div><div class="summary-value" id="fcBudget">€ 0</div></div>
+    <div class="summary-card"><div class="summary-label">Costo</div><div class="summary-value" id="fcCost">€ 0</div></div>
+    <div class="summary-card"><div class="summary-label">Utile teorico</div><div class="summary-value" id="fcProfit">€ 0</div></div>
+    <div class="summary-card"><div class="summary-label">Margine medio</div><div class="summary-value" id="fcMargin">0%</div></div>
+  </div>
+  <div class="section-title">Dettaglio</div>
+  <div id="costTable" class="cost-table"></div>
+</section>
+</main>
+
+<div class="actionbar">
+  <div class="actions">
+    <button class="action secondary" id="resetBtn">Azzera quantità</button>
+    <button class="action primary" onclick="window.print()">Crea PDF</button>
+  </div>
+</div>
 </div>
 
 <script>
@@ -620,91 +296,76 @@ const DEFAULT_PRODUCTS = [
   {name:"Tapas da 8", price:8, pieces:1, cost:0, qty:0}
 ];
 
-let products = structuredClone(DEFAULT_PRODUCTS);
-const ids = ["people","perPerson","proposal","client","phone","date","time"];
+const DEFAULT_BEVERAGE = [
+  {name:"Vino/birra base", price:5, selected:false},
+  {name:"Vino/birra (tutti i disponibili)", price:6, selected:false},
+  {name:"Cocktail classici", price:9, selected:false},
+  {name:"Cocktail da carta drink", price:11, selected:false}
+];
 
-const euro = n => new Intl.NumberFormat("it-IT",{
-  style:"currency",
-  currency:"EUR",
-  minimumFractionDigits:0,
-  maximumFractionDigits:2
-}).format(Number(n)||0);
+let products=structuredClone(DEFAULT_PRODUCTS);
+let beverages=structuredClone(DEFAULT_BEVERAGE);
 
-function esc(s){
-  return String(s).replace(/[&<>"']/g,c=>({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-  }[c]));
-}
+const ids=["people","perPerson","proposal","client","phone","date","time","placePreference","notes","publishNotes"];
+const euro=n=>new Intl.NumberFormat("it-IT",{style:"currency",currency:"EUR",minimumFractionDigits:0,maximumFractionDigits:2}).format(Number(n)||0);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
 
 function renderProducts(){
-  const list=document.getElementById("productList");
-  list.innerHTML=products.map((p,i)=>`
-    <article class="product ${p.qty===0 ? "zero-qty" : ""}" id="product-${i}">
+  document.getElementById("productList").innerHTML=products.map((p,i)=>`
+    <article class="product ${p.qty===0?"zero-qty":""}" id="product-${i}">
       <div class="product-top">
         <div>
           <div class="product-name">${esc(p.name)}</div>
           <div class="product-meta">${euro(p.price)} cad. · ${p.pieces} pezzi per quantità</div>
         </div>
         <div class="quantity">
-          <button onclick="changeQty(${i},-1)" aria-label="Diminuisci">−</button>
-          <input value="${p.qty}" min="0" type="number" inputmode="numeric"
-                 oninput="setQty(${i},this.value)">
-          <button onclick="changeQty(${i},1)" aria-label="Aumenta">+</button>
+          <button onclick="changeQty(${i},-1)">−</button>
+          <input type="number" min="0" inputmode="numeric" value="${p.qty}" oninput="setQty(${i},this.value)">
+          <button onclick="changeQty(${i},1)">+</button>
         </div>
       </div>
       <div class="product-result">
         <div class="chip">Pezzi totali<strong id="pieces-${i}">0</strong></div>
         <div class="chip">Spesa totale<strong id="sales-${i}">€ 0</strong></div>
       </div>
-    </article>
-  `).join("");
+    </article>`).join("");
+}
+
+function renderBeverages(){
+  const people=Number(document.getElementById("people").value)||0;
+  document.getElementById("beverageList").innerHTML=beverages.map((b,i)=>`
+    <label class="beverage-card ${b.selected?"":"not-selected"}" id="bev-${i}">
+      <input type="checkbox" ${b.selected?"checked":""} onchange="toggleBeverage(${i},this.checked)">
+      <div>
+        <div class="bev-name">${esc(b.name)}</div>
+        <div class="bev-meta">${euro(b.price)} per persona</div>
+      </div>
+      <div class="bev-total">${euro(b.selected?b.price*people:0)}</div>
+    </label>`).join("");
 }
 
 function renderSettings(){
-  const el=document.getElementById("settingsList");
-  el.innerHTML=products.map((p,i)=>`
-    <div class="cost-row" style="margin-top:9px">
+  document.getElementById("settingsList").innerHTML=products.map((p,i)=>`
+    <div class="cost-row" style="margin-top:8px">
       <div class="cost-head">${esc(p.name)}</div>
       <div class="settings-grid">
-        <div class="mini-field">
-          <label>Prezzo cad.</label>
-          <input type="number" step=".1" value="${p.price}"
-                 oninput="updateProduct(${i},'price',this.value)">
-        </div>
-        <div class="mini-field">
-          <label>Pezzi cad.</label>
-          <input type="number" step="1" value="${p.pieces}"
-                 oninput="updateProduct(${i},'pieces',this.value)">
-        </div>
-        <div class="mini-field">
-          <label>Costo cad.</label>
-          <input type="number" step=".1" value="${p.cost}"
-                 oninput="updateProduct(${i},'cost',this.value)">
-        </div>
-        <div class="mini-field">
-          <label>Nome piatto</label>
-          <input value="${esc(p.name)}"
-                 oninput="updateProduct(${i},'name',this.value)">
-        </div>
+        <div class="mini-field"><label>Prezzo cad.</label><input type="number" step=".1" value="${p.price}" oninput="updateProduct(${i},'price',this.value)"></div>
+        <div class="mini-field"><label>Pezzi cad.</label><input type="number" step="1" value="${p.pieces}" oninput="updateProduct(${i},'pieces',this.value)"></div>
+        <div class="mini-field"><label>Costo cad.</label><input type="number" step=".1" value="${p.cost}" oninput="updateProduct(${i},'cost',this.value)"></div>
+        <div class="mini-field"><label>Nome piatto</label><input value="${esc(p.name)}" oninput="updateProduct(${i},'name',this.value)"></div>
       </div>
-    </div>
-  `).join("");
+    </div>`).join("");
 }
 
 function renderCostTable(){
-  const el=document.getElementById("costTable");
-  el.innerHTML=products.map((p)=>{
-    const lineSales=p.price*p.qty;
-    const lineCost=p.cost*p.qty;
-    const lineProfit=lineSales-lineCost;
-    const margin=p.price ? ((p.price-p.cost)/p.price*100) : 0;
-
-    return `<div class="cost-row ${p.qty===0 ? "zero-qty" : ""}">
+  document.getElementById("costTable").innerHTML=products.map(p=>{
+    const sales=p.price*p.qty,cost=p.cost*p.qty,profit=sales-cost,margin=p.price?((p.price-p.cost)/p.price*100):0;
+    return `<div class="cost-row ${p.qty===0?"zero-qty":""}">
       <div class="cost-head">${esc(p.name)}</div>
       <div class="cost-grid">
         <div class="mini-field"><label>Quantità</label><div class="readonly">${p.qty}</div></div>
-        <div class="mini-field"><label>Costo totale</label><div class="readonly">${euro(lineCost)}</div></div>
-        <div class="mini-field"><label>Utile</label><div class="readonly">${euro(lineProfit)}</div></div>
+        <div class="mini-field"><label>Costo totale</label><div class="readonly">${euro(cost)}</div></div>
+        <div class="mini-field"><label>Utile</label><div class="readonly">${euro(profit)}</div></div>
         <div class="mini-field"><label>Prezzo cad.</label><div class="readonly">${euro(p.price)}</div></div>
         <div class="mini-field"><label>Costo cad.</label><div class="readonly">${euro(p.cost)}</div></div>
         <div class="mini-field"><label>Margine</label><div class="readonly">${margin.toFixed(1).replace(".",",")}%</div></div>
@@ -713,142 +374,116 @@ function renderCostTable(){
   }).join("");
 }
 
-function changeQty(i,d){
-  products[i].qty=Math.max(0,(Number(products[i].qty)||0)+d);
-  renderProducts();
-  calculate();
-}
-
-function setQty(i,v){
-  products[i].qty=Math.max(0,Number(v)||0);
-  calculate();
-}
-
+function changeQty(i,d){products[i].qty=Math.max(0,(Number(products[i].qty)||0)+d);renderProducts();calculate()}
+function setQty(i,v){products[i].qty=Math.max(0,Number(v)||0);calculate()}
+function toggleBeverage(i,val){beverages[i].selected=val;renderBeverages();calculate()}
 function updateProduct(i,key,v){
-  products[i][key]=key==="name" ? v : Math.max(0,Number(v)||0);
-  renderProducts();
-  calculate();
+  products[i][key]=key==="name"?v:Math.max(0,Number(v)||0);
+  renderProducts();calculate()
 }
 
 function calculate(){
   const people=Number(document.getElementById("people").value)||0;
   const pp=Number(document.getElementById("perPerson").value)||0;
-  const budget=people*pp;
+  const foodBudget=people*pp;
 
-  let sales=0,pieces=0,cost=0,weightedMarginSum=0,weightedSales=0;
-
+  let foodSpent=0,pieces=0,cost=0,weightedMargin=0,weightedSales=0;
   products.forEach((p,i)=>{
-    const lineSales=p.price*p.qty;
-    const linePieces=p.pieces*p.qty;
-    const lineCost=p.cost*p.qty;
-
-    sales+=lineSales;
-    pieces+=linePieces;
-    cost+=lineCost;
-    weightedMarginSum+=(p.price-p.cost)*p.qty;
-    weightedSales+=p.price*p.qty;
-
-    const pieceEl=document.getElementById(`pieces-${i}`);
-    const salesEl=document.getElementById(`sales-${i}`);
-    const productEl=document.getElementById(`product-${i}`);
-
-    if(pieceEl) pieceEl.textContent=linePieces;
-    if(salesEl) salesEl.textContent=euro(lineSales);
-    if(productEl) productEl.classList.toggle("zero-qty",p.qty===0);
+    const sales=p.price*p.qty, pcs=p.pieces*p.qty, c=p.cost*p.qty;
+    foodSpent+=sales;pieces+=pcs;cost+=c;
+    weightedMargin+=(p.price-p.cost)*p.qty;weightedSales+=sales;
+    const pe=document.getElementById(`pieces-${i}`),se=document.getElementById(`sales-${i}`),row=document.getElementById(`product-${i}`);
+    if(pe)pe.textContent=pcs;if(se)se.textContent=euro(sales);if(row)row.classList.toggle("zero-qty",p.qty===0);
   });
 
-  const residual=budget-sales;
-  const profit=sales-cost;
-  const residualDock=document.getElementById("residualDock");
+  let beverageBudget=0;
+  beverages.forEach(b=>{if(b.selected)beverageBudget+=b.price*people});
+  const grandBudget=foodBudget+beverageBudget;
+  const foodResidual=foodBudget-foodSpent;
+  const profit=foodSpent-cost;
 
-  document.getElementById("budgetTotal").textContent=euro(budget);
-  document.getElementById("salesDock").textContent=euro(sales);
-  document.getElementById("budgetResidual").textContent=euro(residual);
-  document.getElementById("piecesDock").textContent=pieces;
+  document.getElementById("foodBudgetDock").textContent=euro(foodBudget);
+  document.getElementById("bevBudgetDock").textContent=euro(beverageBudget);
+  document.getElementById("foodSpentDock").textContent=euro(foodSpent);
+  document.getElementById("foodResidualDock").textContent=euro(foodResidual);
+  document.getElementById("grandBudgetDock").textContent=euro(grandBudget);
+  document.getElementById("residualDock").classList.toggle("negative",foodResidual<0);
 
-  residualDock.classList.toggle("residual-negative",residual<0);
-  residualDock.classList.toggle("residual-positive",residual>=0);
-
-  document.getElementById("salesTotal").textContent=euro(sales);
+  document.getElementById("foodBudget").textContent=euro(foodBudget);
+  document.getElementById("beverageBudget").textContent=euro(beverageBudget);
+  document.getElementById("grandBudget").textContent=euro(grandBudget);
   document.getElementById("piecesTotal").textContent=pieces;
+
+  document.getElementById("foodSpent").textContent=euro(foodSpent);
   document.getElementById("costTotal").textContent=euro(cost);
   document.getElementById("profitTotal").textContent=euro(profit);
+  document.getElementById("foodResidual").textContent=euro(foodResidual);
 
-  document.getElementById("fcBudget").textContent=euro(budget);
+  document.getElementById("fcBudget").textContent=euro(foodBudget);
   document.getElementById("fcCost").textContent=euro(cost);
-  document.getElementById("fcProfit").textContent=euro(budget-cost);
-  document.getElementById("fcMargin").textContent=
-    (weightedSales ? weightedMarginSum/weightedSales*100 : 0)
-    .toFixed(1).replace(".",",")+"%";
+  document.getElementById("fcProfit").textContent=euro(foodBudget-cost);
+  document.getElementById("fcMargin").textContent=(weightedSales?weightedMargin/weightedSales*100:0).toFixed(1).replace(".",",")+"%";
 
+  document.getElementById("notesCard").classList.toggle("hide-in-pdf",!document.getElementById("publishNotes").checked);
+
+  renderBeverages();
   renderCostTable();
   save();
 }
 
 function save(){
   document.getElementById("saveState").textContent="Salvataggio…";
-  const data={products};
-  ids.forEach(id=>data[id]=document.getElementById(id).value);
-
-  try{
-    localStorage.setItem("done-preventivi-apple-v1",JSON.stringify(data));
-  }catch(e){}
-
-  setTimeout(()=>{
-    document.getElementById("saveState").textContent="Salvato";
-  },160);
+  const data={products,beverages};
+  ids.forEach(id=>{
+    const el=document.getElementById(id);
+    data[id]=el.type==="checkbox"?el.checked:el.value;
+  });
+  try{localStorage.setItem("done-preventivi-flat-v3",JSON.stringify(data))}catch(e){}
+  setTimeout(()=>document.getElementById("saveState").textContent="Salvato",150);
 }
 
 function load(){
   try{
-    const data=JSON.parse(localStorage.getItem("done-preventivi-apple-v1"));
-    if(!data)return;
-
+    const d=JSON.parse(localStorage.getItem("done-preventivi-flat-v3"));
+    if(!d)return;
     ids.forEach(id=>{
-      if(data[id]!==undefined){
-        document.getElementById(id).value=data[id];
+      const el=document.getElementById(id);
+      if(d[id]!==undefined){
+        if(el.type==="checkbox")el.checked=!!d[id];else el.value=d[id];
       }
     });
-
-    if(Array.isArray(data.products) && data.products.length){
-      products=data.products;
-    }
+    if(Array.isArray(d.products))products=d.products;
+    if(Array.isArray(d.beverages))beverages=d.beverages;
   }catch(e){}
 }
 
-function resetQty(){
-  products.forEach(p=>p.qty=0);
-  renderProducts();
-  calculate();
-}
-
 document.getElementById("resetBtn").addEventListener("click",()=>{
-  if(confirm("Azzerare tutte le quantità?")) resetQty();
+  if(confirm("Azzerare quantità food e selezioni beverage?")){
+    products.forEach(p=>p.qty=0);beverages.forEach(b=>b.selected=false);
+    renderProducts();renderBeverages();calculate();
+  }
 });
 
 ids.forEach(id=>{
-  document.getElementById(id).addEventListener("input",calculate);
+  const el=document.getElementById(id);
+  el.addEventListener(el.type==="checkbox"?"change":"input",calculate);
 });
 
-document.querySelectorAll(".tab").forEach(btn=>{
-  btn.addEventListener("click",()=>{
-    document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
-    document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));
-
-    btn.classList.add("active");
-    document.getElementById(btn.dataset.panel).classList.add("active");
-  });
-});
+document.querySelectorAll(".tab").forEach(btn=>btn.addEventListener("click",()=>{
+  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+  document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));
+  btn.classList.add("active");
+  document.getElementById(btn.dataset.panel).classList.add("active");
+}));
 
 load();
 renderProducts();
 renderSettings();
+renderBeverages();
 calculate();
 
 if("serviceWorker" in navigator){
-  window.addEventListener("load",()=>{
-    navigator.serviceWorker.register("./sw.js").catch(()=>{});
-  });
+  window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
 }
 </script>
 </body>

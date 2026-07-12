@@ -1,20 +1,20 @@
-# Preventivi D.ONE — versione Apple
+# Preventivi D.ONE — Flat v3
 
 ## Novità
-- Barra budget sempre visibile.
-- Grafica ridisegnata in stile iOS.
-- Nel PDF vengono escluse automaticamente tutte le voci con quantità pari a zero.
-- Migliorata la gestione della cache per gli aggiornamenti.
+- Grafica flat con colori pieni.
+- Quantità evidenziate in giallo.
+- Preferenza posto: dentro / fuori / indifferente.
+- Campo note con scelta di pubblicazione nel PDF.
+- Sezione beverage con calcolo per persona.
+- Recap complessivo food + beverage.
+- Nel PDF non compaiono costo totale, utile stimato, food cost o voci a quantità zero.
 
-## Aggiornamento del repository
-Sostituisci nel repository i file:
-- `index.html`
-- `manifest.webmanifest`
-- `sw.js`
-- la cartella `icons`
+## Aggiornamento
+Sostituisci nel repository:
+- index.html
+- manifest.webmanifest
+- sw.js
+- README.md
+- cartella icons
 
-Dopo il caricamento:
-1. attendi 1-2 minuti;
-2. chiudi completamente la web app su iPhone;
-3. riaprila;
-4. se vedi ancora la vecchia versione, apri una volta il link in Safari e aggiorna la pagina.
+Dopo il commit attendi 1-2 minuti e riapri il link in Safari.
