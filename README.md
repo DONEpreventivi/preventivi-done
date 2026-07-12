@@ -1,24 +1,27 @@
-# Preventivi D.ONE 2.0
+# Preventivi D.ONE v2.0.1
 
-Versione completamente riorganizzata e modulare.
+Versione corretta con grafica, CSS, JavaScript e logo incorporati direttamente dentro `index.html`.
 
-## Funzioni
-- preventivo food + beverage;
-- barra recap sempre visibile;
-- archivio locale;
-- ricerca cliente;
-- duplicazione;
-- storico modifiche;
-- ripristino versioni;
-- impostazioni piatti e beverage;
-- PDF senza dati interni;
-- naming PDF automatico;
-- nuovo preventivo;
-- layout mobile ottimizzato.
+Questo evita problemi dovuti a:
+- cartelle `assets` non caricate;
+- percorsi errati;
+- cache incompleta di GitHub Pages;
+- caricamento parziale dei file su iPhone.
 
-## Pubblicazione
-Carica tutto il contenuto dello ZIP nella root del repository GitHub Pages, mantenendo le cartelle:
-- assets/
-- icons/
+## Aggiornamento GitHub
 
-Dopo il commit, attendi 1-2 minuti e aggiorna il link in Safari.
+Sostituisci nella root del repository:
+
+- `index.html`
+- `manifest.webmanifest`
+- `sw.js`
+- cartella `icons`
+
+La cartella `assets` non serve più.
+
+Dopo il commit:
+1. attendi 1-2 minuti;
+2. apri il link GitHub Pages in Safari;
+3. ricarica;
+4. chiudi completamente la web app;
+5. riaprila dall'icona Home.
