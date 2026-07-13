@@ -1,14 +1,11 @@
-# Preventivi D.ONE v2.0.5 DEBUG
+# Preventivi D.ONE v2.0.6 DEBUG
 
-Nuova funzione backup:
-- Esporta archivio in formato JSON.
-- Importa archivio da backup JSON.
-- Il backup comprende:
-  - preventivi salvati;
-  - storico modifiche;
-  - preventivo corrente;
-  - prodotti e prezzi;
-  - beverage;
-  - bottiglie di vino.
-
-Prima di ogni aggiornamento è consigliato esportare un backup.
+Novità:
+- rotellina impostazioni in alto a destra;
+- menu impostazioni con:
+  - Esporta backup
+  - Importa backup
+  - Numero versione
+- diciture brevi nell'app;
+- diciture estese dedicate nel PDF;
+- mantenute tutte le funzioni della v2.0.5.
