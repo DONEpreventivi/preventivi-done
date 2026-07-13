@@ -1,8 +1,14 @@
-# Preventivi D.ONE v2.0.3 DEBUG
+# Preventivi D.ONE v2.0.5 DEBUG
 
-Modifiche:
-- logo PDF ridotto e mantenuto in proporzione;
-- accesso protetto da password: `donetorino`;
-- password memorizzata per la sola sessione corrente;
-- nuovo pulsante WhatsApp con messaggio precompilato;
-- mantenute tutte le funzioni della v2.0.2.
+Nuova funzione backup:
+- Esporta archivio in formato JSON.
+- Importa archivio da backup JSON.
+- Il backup comprende:
+  - preventivi salvati;
+  - storico modifiche;
+  - preventivo corrente;
+  - prodotti e prezzi;
+  - beverage;
+  - bottiglie di vino.
+
+Prima di ogni aggiornamento è consigliato esportare un backup.
