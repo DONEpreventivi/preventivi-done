@@ -1,11 +1,16 @@
-# Preventivi D.ONE v2.0.6 DEBUG
+# Preventivi D.ONE v2.0.8 DEBUG
 
-Novità:
-- rotellina impostazioni in alto a destra;
-- menu impostazioni con:
-  - Esporta backup
-  - Importa backup
-  - Numero versione
-- diciture brevi nell'app;
-- diciture estese dedicate nel PDF;
-- mantenute tutte le funzioni della v2.0.5.
+Questa versione implementa e collega realmente il menu Impostazioni.
+
+Contenuto:
+- Esporta backup
+- Ripristina backup
+- Versione dell’app 2.0.8
+
+Il backup include:
+- archivio preventivi;
+- storico;
+- preventivo corrente;
+- prodotti;
+- beverage;
+- bottiglie di vino.
