@@ -1,10 +1,8 @@
-# Preventivi D.ONE v2.0.2 DEBUG
+# Preventivi D.ONE v2.0.3 DEBUG
 
-Correzioni:
-- maggiore spazio di scroll sotto le note;
-- “Azzera quantità” azzera anche persone e budget;
-- nel PDF compare il testo delle note senza la dicitura “Note”;
-- PDF compatto A4, con quantità, pezzi e importi parziali;
-- aggiunte bottiglie di vino da €23 e €26 con controlli +/−;
-- le bottiglie concorrono al totale beverage;
-- dati delle bottiglie inclusi nel salvataggio, archivio e duplicazione.
+Modifiche:
+- logo PDF ridotto e mantenuto in proporzione;
+- accesso protetto da password: `donetorino`;
+- password memorizzata per la sola sessione corrente;
+- nuovo pulsante WhatsApp con messaggio precompilato;
+- mantenute tutte le funzioni della v2.0.2.
