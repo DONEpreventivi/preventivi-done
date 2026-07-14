@@ -1,4 +1,4 @@
-const CACHE="done-preventivi-v2-0-8";
+const CACHE="done-preventivi-v2-0-11";
 const FILES=[
   "./",
   "./index.html",
