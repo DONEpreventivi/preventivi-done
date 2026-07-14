@@ -1,11 +1,15 @@
-# Preventivi D.ONE v2.0.11 DEBUG
+# Preventivi D.ONE v2.0.14 REBUILT
 
-Novità:
-- riquadro meteo indicativo per Torino dopo la selezione di data e ora;
-- il meteo è solo interno e non compare nel PDF;
-- temperatura, condizioni, probabilità di pioggia e vento;
-- avviso per date oltre l’orizzonte disponibile;
-- duplicazione progressiva delle proposte:
-  - PROPOSTA A → PROPOSTA B
-  - PROPOSTA B → PROPOSTA C
-  - ecc.
+Ricostruita dalla base stabile v2.0.10 dopo audit completo.
+
+Correzioni:
+- struttura HTML ripulita e validata;
+- nessun ID duplicato;
+- ordine: Data/Ora → Meteo → Preferenza posto → Motivo;
+- spazi uniformi;
+- beverage comprimibile con totale e subtotali allineati;
+- campi testuali non in grassetto;
+- recap superiore più leggibile;
+- PDF isolato su una sola pagina;
+- duplicazione progressiva PROPOSTA A/B/C;
+- meteo escluso dal PDF.
