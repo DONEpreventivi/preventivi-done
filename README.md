@@ -1,17 +1,13 @@
-# Preventivi D.ONE v3.0
+# Preventivi D.ONE v3.0.1 FIX
 
-Versione modulare e più stabile.
+Questa versione torna alla struttura monolitica stabile:
+- CSS incorporato in index.html
+- JavaScript incorporato in index.html
+- nessuna cartella assets necessaria
 
-Struttura:
-- index.html
-- assets/css/app.css
-- assets/js/app.js
-- manifest.webmanifest
-- sw.js
-- icons/
-
-Modifiche:
+Correzioni:
+- ripristinata grafica completa;
+- ripristinate proporzioni e layout;
 - selettore beverage uguale a quello del food;
 - dicitura “Vino/birra (tutti)”;
-- service worker network-first per ridurre i problemi di cache;
-- mantenute le funzioni della v2.0.15.
+- service worker aggiornato per ridurre i problemi di cache.
