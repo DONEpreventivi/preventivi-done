@@ -1,15 +1,17 @@
-# Preventivi D.ONE v2.0.14 REBUILT
+# Preventivi D.ONE v3.0
 
-Ricostruita dalla base stabile v2.0.10 dopo audit completo.
+Versione modulare e più stabile.
 
-Correzioni:
-- struttura HTML ripulita e validata;
-- nessun ID duplicato;
-- ordine: Data/Ora → Meteo → Preferenza posto → Motivo;
-- spazi uniformi;
-- beverage comprimibile con totale e subtotali allineati;
-- campi testuali non in grassetto;
-- recap superiore più leggibile;
-- PDF isolato su una sola pagina;
-- duplicazione progressiva PROPOSTA A/B/C;
-- meteo escluso dal PDF.
+Struttura:
+- index.html
+- assets/css/app.css
+- assets/js/app.js
+- manifest.webmanifest
+- sw.js
+- icons/
+
+Modifiche:
+- selettore beverage uguale a quello del food;
+- dicitura “Vino/birra (tutti)”;
+- service worker network-first per ridurre i problemi di cache;
+- mantenute le funzioni della v2.0.15.
